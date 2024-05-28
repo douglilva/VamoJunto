@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "cadrasto",
+    "slug": "cadrasto",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
