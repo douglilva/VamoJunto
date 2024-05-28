@@ -35,9 +35,9 @@ const EventForm = ({ route, navigation }) => {
             <Text>Localização:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={location => setEvent({...event, location})}
-                placeholder="Informe a Localização"
-                value={event.location}
+                onChangeText={endereco => setEvent({...event, endereco})}
+                placeholder="informe o seu endereço"
+                value={event.endereco}
             />
             <Text>Número de Ingressos:</Text>
             <TextInput

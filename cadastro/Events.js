@@ -1,5 +1,5 @@
 //Componente para gerar eventos aleatóriamente, para testar os códigos
-
+/*
 function generateRandomEvent(id) {
   const names = ['Palestra sobre IA', 'Seminário de Design', 'Workshop de Programação', 'Conferência de Tecnologia', 'Exposição de Arte', 'Apresentação de Música', 'Oficina de Fotografia', 'Concerto de Jazz', 'Feira de Negócios', 'Curso de Marketing'];
   const locations = ['Auditório', 'Sala de Seminário', 'Sala de Conferências', 'Galeria de Arte', 'Teatro', 'Estúdio de Música', 'Estúdio de Fotografia', 'Clube de Jazz', 'Centro de Convenções', 'Salão de Eventos'];
@@ -34,3 +34,4 @@ const numberOfEvents = 10;
 const events = Array.from({ length: numberOfEvents }, (_, i) => generateRandomEvent(i + 1));
 
 export default events;
+*/

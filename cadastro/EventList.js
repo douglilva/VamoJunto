@@ -69,7 +69,7 @@ export default function EventList(props) {
                 <ListItem.Content>
                     <ListItem.Title>{event.name}</ListItem.Title>
                     <ListItem.Subtitle>{event.date}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{event.location}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{event.endereco}</ListItem.Subtitle>
                     <ListItem.Subtitle>Valor: {event.value}</ListItem.Subtitle>
                     <ListItem.Subtitle>Ingressos disponíveis: {event.tickets}</ListItem.Subtitle>
                 </ListItem.Content>
