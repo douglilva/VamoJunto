@@ -56,7 +56,7 @@ export default function FilterList() {
                     <ListItem.Content>
                         <ListItem.Title>{event.name}</ListItem.Title>
                         <ListItem.Subtitle>{event.date}</ListItem.Subtitle>
-                        <ListItem.Subtitle>{event.location}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{event.endereco}</ListItem.Subtitle>
                         <ListItem.Subtitle>Ingressos Disponíveis: {event.tickets}</ListItem.Subtitle>
                     </ListItem.Content>
                     {event.favorite && <Icon name="star" type='font-awesome' color="yellow" />}

@@ -35,6 +35,17 @@ const actions = {
             events: updatedEvents
         };
     },
+    createUsuario(state, action) {
+        const usuario = action.payload;
+        usuario.id = Math.random();
+        usuario.reservations = []; 
+        const updatedEvents = [usuario, ...state.usuario];
+        saveEvents(updatedEvents);
+        return {
+            ...state,
+            usuario: updatedEvents
+        };
+    },
     updateEvent(state, action) {
         const updated = action.payload;
         const updatedEvents = state.events.map(e => e.id === updated.id ? updated : e);
