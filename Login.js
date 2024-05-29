@@ -1,18 +1,22 @@
-// LoginScreen.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ReservationForm from './cadastro/ReservationForm';
+import UserContext from './cadastro/UserContextFile'; // ajuste o caminho conforme necessário
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
+    const { state } = useContext(UserContext);
 
     const handleLogin = () => {
-        // Lógica de login
-        // Se login for bem-sucedido, navegue para as tabs
-        navigation.navigate('Tabs');
+        const user = state.usuarios.find(u => u.email === email && u.password === password);
+        if (user) {
+            // Se login for bem-sucedido, navegue para as tabs
+            navigation.navigate('Tabs');
+        } else {
+            alert('Email ou senha incorretos');
+        }
     };
 
     return (

@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Alert } from 'react-native';
 import { Button } from '@rneui/themed';
 import UserContext from './UserContextFile';
 
 const UserRegistrationForm = ({ navigation }) => {
-    const { dispatch } = useContext(UserContext);
+    const { state, dispatch } = useContext(UserContext);
     const [user, setUser] = useState({
         name: '',
         document: '',
@@ -12,6 +12,10 @@ const UserRegistrationForm = ({ navigation }) => {
         password: '',
         confirmPassword: ''
     });
+
+    useEffect(() => {
+        console.warn('Usuários salvos:', state.usuarios);
+    }, [state.usuarios]);
 
     const handleRegister = () => {
         if (!user.name.trim() || !user.document.trim() || !user.email.trim() || !user.password.trim() || !user.confirmPassword.trim()) {
@@ -31,7 +35,7 @@ const UserRegistrationForm = ({ navigation }) => {
             password: user.password
         };
 
-        dispatch({ type: 'createUser', payload: newUser });
+        dispatch({ type: 'createUsuario', payload: newUser });
         navigation.goBack();
     };
 

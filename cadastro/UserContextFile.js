@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserContext = createContext({});
@@ -24,7 +24,7 @@ const actions = {
     },
     createUsuario(state, action) {
         const usuario = action.payload;
-        usuario.id = Math.random();
+        usuario.id = Math.random().toString(36).substring(7);
         const updatedUsuarios = [usuario, ...state.usuarios];
         saveUsuarios(updatedUsuarios);
         return {
@@ -74,6 +74,8 @@ export const UserProvider = (props) => {
         </UserContext.Provider>
     );
 };
+
+export const useUserContext = () => useContext(UserContext);
 
 async function saveUsuarios(usuarios) {
     try {
