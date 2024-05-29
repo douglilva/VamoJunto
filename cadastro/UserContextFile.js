@@ -24,8 +24,7 @@ const actions = {
     },
     createUsuario(state, action) {
         const usuario = action.payload;
-        usuario.id = Math.random().toString(36).substring(7);
-        usuario.reservations = [];
+        usuario.id = Math.random();
         const updatedUsuarios = [usuario, ...state.usuarios];
         saveUsuarios(updatedUsuarios);
         return {

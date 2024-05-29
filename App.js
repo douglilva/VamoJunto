@@ -5,6 +5,7 @@ import { EventsProvider } from './cadastro/EventContextFile';
 import LoginScreen from './Login'
 import Tab from './Tab';
 import ReservationForm from './cadastro/ReservationForm';
+import { UserProvider } from './cadastro/UserContextFile';
 
 
 const Stack = createNativeStackNavigator()
@@ -12,6 +13,7 @@ const Stack = createNativeStackNavigator()
 export default function App() {
   return (
     <EventsProvider>
+      <UserProvider>
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} />
@@ -19,6 +21,7 @@ export default function App() {
                 <Stack.Screen name="ReservationForm" component={ReservationForm} />
             </Stack.Navigator>
         </NavigationContainer>
+        </UserProvider>
     </EventsProvider>
   );
 }

@@ -7,16 +7,32 @@ const UserRegistrationForm = ({ navigation }) => {
     const { dispatch } = useContext(UserContext);
     const [user, setUser] = useState({
         name: '',
-        document: ''
+        document: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     });
 
     const handleRegister = () => {
-        if (user.name.trim() && user.document.trim()) {
-            dispatch({ type: 'createUsuario', payload: user });
-            navigation.goBack();
-        } else {
+        if (!user.name.trim() || !user.document.trim() || !user.email.trim() || !user.password.trim() || !user.confirmPassword.trim()) {
             Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
+            return;
         }
+
+        if (user.password !== user.confirmPassword) {
+            Alert.alert('Erro', 'As senhas não coincidem.');
+            return;
+        }
+
+        const newUser = {
+            name: user.name,
+            document: user.document,
+            email: user.email,
+            password: user.password
+        };
+
+        dispatch({ type: 'createUser', payload: newUser });
+        navigation.goBack();
     };
 
     return (
@@ -25,15 +41,40 @@ const UserRegistrationForm = ({ navigation }) => {
             <TextInput
                 style={styles.input}
                 value={user.name}
-                onChangeText={(name) => setUser({ ...user, name })}
+                onChangeText={name => setUser({ ...user, name })}
                 placeholder="Informe seu nome"
             />
             <Text>Documento:</Text>
             <TextInput
                 style={styles.input}
                 value={user.document}
-                onChangeText={(document) => setUser({ ...user, document })}
+                onChangeText={document => setUser({ ...user, document })}
                 placeholder="Informe o número do seu documento"
+            />
+            <Text>Email:</Text>
+            <TextInput
+                style={styles.input}
+                value={user.email}
+                onChangeText={email => setUser({ ...user, email })}
+                placeholder="Informe seu email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+            />
+            <Text>Senha:</Text>
+            <TextInput
+                style={styles.input}
+                value={user.password}
+                onChangeText={password => setUser({ ...user, password })}
+                placeholder="Informe sua senha"
+                secureTextEntry
+            />
+            <Text>Confirmar Senha:</Text>
+            <TextInput
+                style={styles.input}
+                value={user.confirmPassword}
+                onChangeText={confirmPassword => setUser({ ...user, confirmPassword })}
+                placeholder="Confirme sua senha"
+                secureTextEntry
             />
             <Button title="Cadastrar" onPress={handleRegister} />
         </View>
