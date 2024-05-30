@@ -12,8 +12,8 @@ const LoginScreen = () => {
     const handleLogin = () => {
         const user = state.usuarios.find(u => u.email === email && u.password === password);
         if (user) {
-            // Se login for bem-sucedido, navegue para as tabs
-            navigation.navigate('Tabs');
+            // Se login for bem-sucedido, navegue para as tabs e passe o ID do motorista logado
+            navigation.navigate('Tabs', { motoristaId: user.id });
         } else {
             alert('Email ou senha incorretos');
         }

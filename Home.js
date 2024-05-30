@@ -1,57 +1,64 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useContext } from 'react';
 import FilterList from './cadastro/FilterList';
 import ReservationForm from './cadastro/ReservationForm';
 import ReservationsList from './cadastro/ReservationsList';
 import EventsContext from './cadastro/EventContextFile';
 
 //Componente stack do que é renderizado na aba home
-export default props => {
+export default function Home({ route }) {
     const Stack = createNativeStackNavigator();
-
+    const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
     return (
-            <Stack.Navigator
-                initialRouteName='FilterList'
-                screenOptions={screenOptions}>
+        <Stack.Navigator
+            initialRouteName='FilterList'
+            screenOptions={screenOptions}>
 
-                {/* Tela para listar os eventos */}
-                <Stack.Screen
-                    name="Eventos Disponíveis"
-                    component={FilterList}
-                    options={({ navigation }) => {
-                        const { state, dispatch } = useContext(EventsContext);
-                    }}
-                />
+            {/* Tela para listar os eventos */}
+            {/* <Stack.Screen
+                name="FilterList"
+                options={{ title: 'Eventos Disponíveis' }}
+                initialParams={{ motoristaId: motoristaId }}
+            >
+                {props => <FilterList {...props} motoristaId={motoristaId} />}
+            </Stack.Screen> */}
 
-                {/* Tela para fazer reserva */}
-                <Stack.Screen
-                        name="ReservationForm"
-                        component={ReservationForm}
-                        options={{
-                            title: 'Formulário de Reserva'
-                        }}
-                />
+            <Stack.Screen
+                name="FilterList"
+                component={FilterList}
+                initialParams={{ motoristaId: motoristaId }}
+                options={{
+                    title: 'Encontrar corrida'
+                }}
+            />
 
-                {/* Tela para listar reservas */}
-                <Stack.Screen
-                        name="ReservationList"
-                        component={ReservationsList}
-                        options={{
-                            title: 'Lista de Reservas'
-                        }}
-                />
-            </Stack.Navigator>
+            {/* Tela para fazer reserva */}
+            <Stack.Screen
+                name="ReservationForm"
+                component={ReservationForm}
+                options={{
+                    title: 'Formulário de Reserva'
+                }}
+            />
+
+            {/* Tela para listar reservas */}
+            <Stack.Screen
+                name="ReservationList"
+                component={ReservationsList}
+                options={{
+                    title: 'Lista de Reservas'
+                }}
+            />
+        </Stack.Navigator>
     );
 }
 
 const screenOptions = {
     headerStyle: {
-      backgroundColor: '#f4511e',
+        backgroundColor: '#f4511e',
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
-      fontWeight: 'bold'
+        fontWeight: 'bold'
     },
-  }
-  
+};

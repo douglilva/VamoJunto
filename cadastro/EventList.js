@@ -1,101 +1,84 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Alert, FlatList, TextInput } from 'react-native';
-import { ListItem, Avatar, Button, Icon } from '@rneui/themed'; 
-import EventsContext from './EventContextFile';
+import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
+import TripsContext from './EventContextFile';
 
-//Componente para listar os eventos com as opções d eeditar, excluir e favoritar com caixa de busca
-export default function EventList(props) {
-    const { state, dispatch } = useContext(EventsContext);
+// Componente para listar as viagens com as opções de participar e buscar por viagens
+export default function TripList({ route }) {
+    const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
-
-    function toggleFavorite(eventId) {
-        dispatch({ type: 'toggleFavorite', payload: eventId });
+    const motoristaId = route.params;
+   
+    function participateInTrip(tripId) {
+        // Aqui você deve substituir pelo ID do usuário atual
+        const passengerId = 1;
+        dispatch({ type: 'addPassenger', payload: { tripId, passengerId } });
     }
 
-    function getActions(event) {
+    function getActions(trip) {
         return (
-            <>
-               <Button
-                    onPress={() => toggleFavorite(event.id)}
-                    type='clear'
-                    icon={
-                        <Icon
-                            name="favorite"
-                            size={25}
-                            color={event.favorite ? 'red' : 'lightgrey'}
-                        />
-                    }
-                />
-                <Button
-                    onPress={() => props.navigation.navigate('EventForm', event)}
-                    type='clear'
-                    icon={<Icon name='edit' size={25} color='orange' />}
-                />
-                <Button
-                    onPress={() => confirmEventDeletion(event)}
-                    type='clear'
-                    icon={<Icon name='delete' size={25} color='gray' />}
-                />
-            </>
+            <Button
+                onPress={() => participateInTrip(trip.id)}
+                type='clear'
+                icon={<Icon name='check' size={25} color='green' />}
+            />
         );
     }
 
-    function confirmEventDeletion(event) {
-        Alert.alert('Excluir Evento', 'Deseja excluir o evento?', [
-            {
-                text: 'Sim',
-                onPress() {
-                    dispatch({
-                        type: 'deleteEvent',
-                        payload: event,
-                    });
-                }
-            },
-            {
-                text: 'Não'
-            }
-        ]);
-    }
+    function getTripsItems({ item: trip }) {
+        // Verifica se o motorista da viagem é igual ao motorista logado
 
-    function getEventsItems({ item: event }) {
+        if (trip.driver !== motoristaId.motoristaId) {
+            // Se não for, retorna null para não renderizar este item na lista
+
+            
+           
+            return null;
+        }
+
+        const origin = trip.origin || 'Origem não informada';
+        const destination = trip.destination || 'Destino não informado';
+        const date = trip.date || 'Data não informada';
+        const time = trip.time || 'Hora não informada';
+        const availableSeats = trip.availableSeats != null ? trip.availableSeats : 'Não informado';
+
         return (
             <ListItem
-                onPress={() => (props.navigation.navigate('EventForm', event))}
+                onPress={() => props.navigation.navigate('TripDetails', trip)}
                 bottomDivider>
                 <Avatar
                     rounded
-                    source={{ uri: event.avatarUrl }} 
+                    source={{ uri: trip.avatarUrl || 'https://via.placeholder.com/150' }} // Adicione uma URL de avatar padrão, se não disponível
                 />
                 <ListItem.Content>
-                    <ListItem.Title>{event.name}</ListItem.Title>
-                    <ListItem.Subtitle>{event.date}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{event.endereco}</ListItem.Subtitle>
-                    <ListItem.Subtitle>Valor: {event.value}</ListItem.Subtitle>
-                    <ListItem.Subtitle>Ingressos disponíveis: {event.tickets}</ListItem.Subtitle>
+                    <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
+                    <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{`Assentos disponíveis: ${availableSeats}`}</ListItem.Subtitle>
                 </ListItem.Content>
-                {getActions(event)}
+                {getActions(trip)}
             </ListItem>
         );
     }
 
-    //Busca por nome ou local
-    const filteredEvents = state.events.filter(event =>
-        event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.location.toLowerCase().includes(searchTerm.toLowerCase())
+    // Busca por origem ou destino
+    const filteredTrips = state.trips.filter(trip =>
+        (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     return (
         <View>
             <TextInput
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10, padding: 5 }}
-                placeholder="Busque o nome ou a localização do evento"
+                placeholder="Busque a origem ou destino"
                 onChangeText={text => setSearchTerm(text)}
                 value={searchTerm}
             />
             <FlatList
-                keyExtractor={event => event.id.toString()}
-                data={filteredEvents}
-                renderItem={getEventsItems}
+                keyExtractor={trip => trip.id.toString()}
+                data={filteredTrips}
+                renderItem={getTripsItems}
             />
         </View>
     );

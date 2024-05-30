@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, FlatList, Alert, Text } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
-import EventsContext from "./EventContextFile"; 
+import TripsContext from "./EventContextFile"; 
 
 //Componente para listar as reservas de um evento com a opção de editar e excluir
 export default function ReservationList({ route, navigation }) {

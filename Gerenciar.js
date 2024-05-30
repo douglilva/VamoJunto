@@ -1,66 +1,18 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Button, Icon } from '@rneui/themed';
 import { useContext } from 'react';
 import { Alert } from 'react-native';
 import EventList from './cadastro/EventList';
 import EventForm from './cadastro/EventForm';
 import EventsContext from './cadastro/EventContextFile';
+import TripDetails from './cadastro/TripDetails';
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-const MainDrawerNavigator = () => {
+const MainStack = ({ route }) => { // Receba o route como um parâmetro
   const { dispatch } = useContext(EventsContext);
-  return (
-
-    <Drawer.Navigator
-        initialRouteName="MainStack"
-        drawerPosition="right"
-        screenOptions={{
-            headerStyle: {
-            backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff', 
-            drawerStyle: {
-                backgroundColor: '#fff', 
-            },
-            drawerActiveTintColor: '#f4511e', 
-            drawerInactiveTintColor: '#000', 
-        }}>
-
-        {/* Tela do drawer que contém o stack do gerenciador de eventos dentro */}
-        <Drawer.Screen
-            name="MainStack"
-            component={MainStack}
-            options={{
-                title: 'Gerenciador de Eventos',
-                headerTitle: '', 
-                drawerIcon: ({ focused, size }) => (
-                    <Icon name="menu" size={size} color={focused ? '#f4511e' : 'gray'} />
-                  ),
-            }}
-        />
-
-        {/* Tela do drawer que contém o formulário de adicionar eventos */}
-        <Drawer.Screen
-            name="AddEvent"
-            component={EventForm}
-            options={{
-                title: 'Adicionar Evento',
-                drawerIcon: ({ color }) => <Icon name="add" size={25} color={color} />, // Adicionar um ícone ao lado do título
-                headerShown: true,
-            }}
-        />
-  </Drawer.Navigator>
-  
-  );
-};
-
-//Componente stack do gerenciador de eventos
-const MainStack = () => {
-  const { dispatch } = useContext(EventsContext);
+  const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
 
   return (
     <Stack.Navigator
@@ -71,48 +23,55 @@ const MainStack = () => {
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         },
       }}>
-
-      {/* Tela para listar os eventos */}
       <Stack.Screen
         name="EventList"
         component={EventList}
+        initialParams={{ motoristaId: motoristaId }}
         options={({ navigation }) => ({
           title: 'Lista de Eventos',
           headerRight: () => (
-            <Button
-              onPress={() => Alert.alert('Apagar tudo', 'Deseja excluir a lista de eventos?',[
-                      {
-                        text: 'Sim',
-                        onPress: () => {
-                          dispatch({
-                            type: 'deleteAll'
-                          });
-                        }
+            <>
+              <Button
+                onPress={() =>
+                  Alert.alert('Apagar tudo', 'Deseja excluir a lista de eventos?', [
+                    {
+                      text: 'Sim',
+                      onPress: () => {
+                        dispatch({
+                          type: 'deleteAll',
+                        });
                       },
-                      {
-                        text: 'Não',
-                      }
+                    },
+                    {
+                      text: 'Não',
+                    },
                   ])
                 }
-                type='clear'
-                icon={<Icon name="delete" size={25} color="white" />} />
-          )
+                type="clear"
+                icon={<Icon name="delete" size={25} color="white" />}
+              />
+              <Button
+                onPress={() => navigation.navigate('EventForm', { motoristaId:  motoristaId})}
+                type="clear"
+                icon={<Icon name="add" size={25} color="white" />}
+              />
+            </>
+          ),
         })}
       />
-
-      {/* Tela com o formulário para editar evento */}
       <Stack.Screen
         name="EventForm"
         component={EventForm}
         options={{
-          title: 'Atualizar Evento'
+          title: 'Adicionar Evento',
         }}
       />
+      <Stack.Screen name="TripDetails" component={TripDetails} />
     </Stack.Navigator>
   );
 };
 
-export default MainDrawerNavigator;
+export default MainStack;

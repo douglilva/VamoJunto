@@ -1,68 +1,62 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Button } from '@rneui/themed';
-import EventsContext from "./EventContextFile";
+import TripsContext from "./EventContextFile";
 
-//Componente que gera o formulário de evento
-const EventForm = ({ route, navigation }) => {
-    const [event, setEvent] = useState(route.params ? route.params : {});
-    const { dispatch } = useContext(EventsContext);
+// Componente que gera o formulário de viagem
+const TripForm = ({ route, navigation }) => {
+    const [trip, setTrip] = useState(route.params ? route.params : {});
+    const { dispatch } = useContext(TripsContext);
+    const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
 
     return (
         <View style={styles.container}>
-            <Text>Nome:</Text>
+            <Text>Origem:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={name => setEvent({...event, name})}
-                placeholder="Informe o Nome"
-                value={event.name}
+                onChangeText={origin => setTrip({ ...trip, origin })}
+                placeholder="Informe a origem"
+                value={trip.origin}
             />
-            <Text> Avatar: </Text>
+            <Text>Destino:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={avatarUrl => setEvent({...event, avatarUrl})}
-                placeholder="Informe o avatar"
-                value={event.avatarUrl}
+                onChangeText={destination => setTrip({ ...trip, destination })}
+                placeholder="Informe o destino"
+                value={trip.destination}
             />
-
             <Text>Data:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={date => setEvent({...event, date})}
-                placeholder="Informe a Data"
-                value={event.date}
+                onChangeText={date => setTrip({ ...trip, date })}
+                placeholder="Informe a data"
+                value={trip.date}
             />
-            <Text>Localização:</Text>
+            <Text>Hora:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={endereco => setEvent({...event, endereco})}
-                placeholder="informe o seu endereço"
-                value={event.endereco}
+                onChangeText={time => setTrip({ ...trip, time })}
+                placeholder="Informe a hora"
+                value={trip.time}
             />
-            <Text>Número de Ingressos:</Text>
+            <Text>Assentos Disponíveis:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={tickets => setEvent({...event, tickets})}
-                placeholder="Informe o Número de Ingressos Disponíveis"
-                value={event.tickets ? event.tickets.toString() : ""}
-                keyboardType="numeric"
-            />
-            <Text>Valor:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={value => setEvent({...event, value})}
-                placeholder="Informe o Valor"
-                value={event.value}
+                onChangeText={availableSeats => setTrip({ ...trip, availableSeats: parseInt(availableSeats) })}
+                placeholder="Informe o número de assentos disponíveis"
+                value={trip.availableSeats ? trip.availableSeats.toString() : ""}
                 keyboardType="numeric"
             />
             <Button
                 title='Salvar'
-                onPress={()=> {
+                onPress={() => {
+                    trip.driver=motoristaId,
+                    console.warn(trip.driver)
                     dispatch({
-                        type: event.id ? 'updateEvent' : 'createEvent',
-                        payload: event,
-                    })
-                    navigation.goBack()
+                        type: trip.id ? 'updateTrip' : 'createTrip',
+                        payload: trip,
+                    });
+                    navigation.goBack();
                 }}
             />
         </View>
@@ -81,4 +75,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default EventForm;
+export default TripForm;

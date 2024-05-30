@@ -1,91 +1,106 @@
 import React, { useContext } from 'react';
-import { View, FlatList, TouchableOpacity, Text } from 'react-native';
+import { View, FlatList, TouchableOpacity, Text, Alert } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
-import EventsContext from './EventContextFile';
-import ReservationForm from './ReservationForm'; 
-import ReservationList from './ReservationsList'; 
+import TripsContext from './EventContextFile';
 
-//Componente para listar os eventos com os favoritos em destaque
-export default function FilterList() {
-    const { state } = useContext(EventsContext);
+export default function OfferedTripsList({route}) {
+    const { state, dispatch } = useContext(TripsContext);
     const navigation = useNavigation();
+    const motoristaId=route.params;
 
-    const handleEventPress = (eventId) => {
-        navigation.navigate('ReservationList', { eventId: eventId }); 
+    const handleEditTrip = (trip) => {
+        navigation.navigate('EditTripForm', { trip });
     };
 
-    function getActions(eventId) {
-        if(eventId.tickets > 0){
-            return (
-                <>
-                <Button
-                    onPress={() => navigation.navigate('ReservationForm', { eventId: eventId })} 
-                    type='clear'
-                    icon={<Icon name="ticket" type='font-awesome' size={25} color="red" />}
-                />
+    const handleDeleteTrip = (tripId) => {
+        Alert.alert('Excluir Corrida', 'Deseja excluir a corrida?', [
+            {
+                text: 'Sim',
+                onPress: () => dispatch({ type: 'deleteTrip', payload: tripId })
+            },
+            {
+                text: 'Não'
+            }
+        ]);
+    };
 
-                <Button
-                    onPress={() => navigation.navigate('ReservationList', { eventId: eventId })} 
-                    type='clear'
-                    icon={<Icon name="eye" type='font-awesome' size={25} color="gray" />}
-                />
-                </>
-            );
-        }else{
-            return (
-                <>
-                <Text>Esgotado</Text>
+    const handleEndTrip = (tripId) => {
+        Alert.alert('Encerrar Corrida', 'Deseja encerrar a corrida?', [
+            {
+                text: 'Sim',
+                onPress: () => dispatch({ type: 'endTrip', payload: tripId })
+            },
+            {
+                text: 'Não'
+            }
+        ]);
+    };
 
-                <Button
-                    onPress={() => navigation.navigate('ReservationList', { eventId: eventId })} 
-                    type='clear'
-                    icon={<Icon name="eye" type='font-awesome' size={25} color="gray" />}
-                />
-                </>
-            );
-        }
-    
-    }
-
-    function getEventsItems({ item: event }) {
+    function getActions(trip) {
         return (
-            <TouchableOpacity onPress={() => handleEventPress(event.id)}>
-                <ListItem bottomDivider>
-                    <Avatar rounded source={{ uri: event.avatarUrl }} />
-                    <ListItem.Content>
-                        <ListItem.Title>{event.name}</ListItem.Title>
-                        <ListItem.Subtitle>{event.date}</ListItem.Subtitle>
-                        <ListItem.Subtitle>{event.endereco}</ListItem.Subtitle>
-                        <ListItem.Subtitle>Ingressos Disponíveis: {event.tickets}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    {event.favorite && <Icon name="star" type='font-awesome' color="yellow" />}
-                    {getActions(event)}
-                </ListItem>
-            </TouchableOpacity>
+            <>
+                <Button
+                    onPress={() => handleEditTrip(trip)}
+                    type='clear'
+                    icon={<Icon name='edit' size={25} color='orange' />}
+                />
+                <Button
+                    onPress={() => handleEndTrip(trip.id)}
+                    type='clear'
+                    icon={<Icon name='stop' size={25} color='red' />}
+                />
+                <Button
+                    onPress={() => handleDeleteTrip(trip.id)}
+                    type='clear'
+                    icon={<Icon name='delete' size={25} color='gray' />}
+                />
+            </>
         );
     }
 
-    // Mostrar os favoritos antes
-    const sortedEvents = [...state.events].sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
+    function getTripsItems({ item: trip }) {
+        
+        // Verifica se o motorista da viagem é diferente do motorista logado
+        if (trip.driver !== motoristaId.motoristaId) {
+
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip })}>
+                    <ListItem bottomDivider>
+                        <Avatar rounded source={{ uri: trip.avatarUrl || 'https://via.placeholder.com/150' }} />
+                        <ListItem.Content>
+                            <ListItem.Title>{`${trip.origin} -> ${trip.destination}`}</ListItem.Title>
+                            <ListItem.Subtitle>{`Data: ${trip.date}`}</ListItem.Subtitle>
+                            <ListItem.Subtitle>{`Hora: ${trip.time}`}</ListItem.Subtitle>
+                            <ListItem.Subtitle>{`Assentos disponíveis: ${trip.availableSeats}`}</ListItem.Subtitle>
+                        </ListItem.Content>
+                        {getActions(trip)}
+                    </ListItem>
+                </TouchableOpacity>
+            );
+        } else {
+
+            return null;
+        }
+    }
 
     return (
         <View>
             <FlatList
-                keyExtractor={event => event.id.toString()}
-                data={sortedEvents}
-                renderItem={getEventsItems}
+                keyExtractor={trip => trip.id.toString()}
+                data={state.trips}
+                renderItem={getTripsItems}
             />
         </View>
     );
 }
 
-export function FilterListStack() {
+export function OfferedTripsListStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="FilterList" component={FilterList} />
-            <Stack.Screen name="ReservationForm" component={ReservationForm} />
-            <Stack.Screen name="ReservationList" component={ReservationList} />
+            <Stack.Screen name="OfferedTripsList" component={OfferedTripsList} />
+            <Stack.Screen name="EditTripForm" component={EditTripForm} />
+            <Stack.Screen name="TripDetails" component={TripDetails} />
         </Stack.Navigator>
     );
 }

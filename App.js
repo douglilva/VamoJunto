@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { EventsProvider } from './cadastro/EventContextFile';
+import { TripsProvider } from './cadastro/EventContextFile';
 import LoginScreen from './Login'
 import Tab from './Tab';
 import ReservationForm from './cadastro/ReservationForm';
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
-    <EventsProvider>
+    <TripsProvider>
       <UserProvider>
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Login">
@@ -22,7 +22,7 @@ export default function App() {
             </Stack.Navigator>
         </NavigationContainer>
         </UserProvider>
-    </EventsProvider>
+    </TripsProvider>
   );
 }
 
