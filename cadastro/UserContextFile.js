@@ -75,6 +75,10 @@ export const UserProvider = (props) => {
     );
 };
 
+export const getUserById = (state, userId) => {
+    return state.usuarios.find(user => user.id === userId);
+};
+
 export const useUserContext = () => useContext(UserContext);
 
 async function saveUsuarios(usuarios) {

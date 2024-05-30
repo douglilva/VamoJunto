@@ -8,7 +8,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ route }) => {
     const { motoristaId } = route.params;
-
+    
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -30,6 +30,12 @@ const TabNavigator = ({ route }) => {
             <Tab.Screen
                 name="Gerenciar"
                 component={Gerenciar}
+                initialParams={{ motoristaId }}
+                options={{ headerShown: false }} 
+            />
+            <Tab.Screen
+                name="Perfil"
+                component={Perfil}
                 initialParams={{ motoristaId }}
                 options={{ headerShown: false }} 
             />
