@@ -49,9 +49,7 @@ export default function Notificacao({ route }) {
             type: 'updateUsuario',
             payload: updatedDriver
         });
-        console.warn(updated.avaliadores.length)
         if(trip.passengers.length==updated.avaliadores.length){
-            console.warn("todos avaliaram")
         }
     }
 

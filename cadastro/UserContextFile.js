@@ -37,7 +37,6 @@ const actions = {
         const updated = action.payload;
         const updatedUsuarios = state.usuarios.map(u => u.id === updated.id ? updated : u);
         saveUsuarios(updatedUsuarios);
-        console.warn(updated);
         return {
             ...state,
             usuarios: updatedUsuarios

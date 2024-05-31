@@ -8,7 +8,7 @@ import TripForm from './EventForm';
 export default function OfferedTripsList({route}) {
     const { state, dispatch } = useContext(TripsContext);
     const navigation = useNavigation();
-    const motoristaId=route.params;
+    const {motoristaId} = route.params;
 
     const handleEditTrip = (trip) => {
         navigation.navigate('TripForm', trip );
@@ -43,6 +43,11 @@ export default function OfferedTripsList({route}) {
         return (
             <>
                 <Button
+                    onPress={() => navigation.navigate('ChatScreen', {trip, motoristaId})}
+                    type='clear'
+                    icon={<Icon name='chat' size={25} color='orange' />}
+                />
+                <Button
                     onPress={() => handleEditTrip(trip)}
                     type='clear'
                     icon={<Icon name='edit' size={25} color='orange' />}
@@ -64,7 +69,7 @@ export default function OfferedTripsList({route}) {
     function getTripsItems({ item: trip }) {
         
         // Verifica se o motorista da viagem é diferente do motorista logado
-        if (trip.driver == motoristaId.motoristaId && trip.parar==false) {
+        if (trip.driver == motoristaId && trip.parar==false) {
 
             return (
                 <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip, motoristaId })}>

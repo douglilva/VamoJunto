@@ -42,7 +42,6 @@ const actions = {
         const updated = action.payload;
         const updatedTrips = state.trips.map(t => t.id === updated.id ? updated : t);
         saveTrips(updatedTrips);
-        console.warn(updated)
         return {
             ...state,
             trips: updatedTrips

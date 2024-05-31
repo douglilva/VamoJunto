@@ -19,7 +19,7 @@ const TripDetails = ({ route, navigation }) => {
         return passenger ? passenger.name : 'Não encontrado';
     };
 
-    if (trip.motoristaId === motoristaId.motoristaId) {
+    if (trip.motoristaId === motoristaId) {
         return (
             <View style={styles.container}>
                 <Text>Origem: {trip.origin}</Text>

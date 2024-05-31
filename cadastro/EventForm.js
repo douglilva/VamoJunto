@@ -15,7 +15,7 @@ const TripForm = ({ route, navigation }) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(trip.date ? new Date(trip.date) : new Date());
+    const [selectedDate, setSelectedDate] = useState(trip.date ? moment(trip.date, "LL").toDate() : new Date());
     const [selectedTime, setSelectedTime] = useState(trip.time ? moment(trip.time, "HH:mm").toDate() : new Date());
 
     const showDatePicker = () => {
@@ -28,17 +28,14 @@ const TripForm = ({ route, navigation }) => {
 
     const handleDateConfirm = (date) => {
         hideDatePicker();
-        setSelectedDate(date);
-        const formattedDate = moment(date).format('LL'); // Formato: "31 de dezembro de 2022"
-        setTrip({ ...trip, date: formattedDate });
-
-        // Se a data selecionada for igual à data atual
-        if (moment(date).isSame(moment(), 'day')) {
-            // Define a hora mínima como a hora atual
-            setSelectedTime(moment().toDate());
+        const currentDate = new Date(); // Data e hora atuais
+        if (moment(date).isBefore(currentDate, 'day')) {
+            // Exibe um alerta de data inválida
+            Alert.alert('Data Inválida', 'Por favor, selecione uma data futura.');
         } else {
-            // Define a hora mínima como 00:00
-            setSelectedTime(moment().startOf('day').toDate());
+            setSelectedDate(date);
+            const formattedDate = moment(date).format('LL'); // Formato: "31 de dezembro de 2022"
+            setTrip({ ...trip, date: formattedDate });
         }
     };
 
@@ -52,7 +49,8 @@ const TripForm = ({ route, navigation }) => {
 
     const handleTimeConfirm = (time) => {
         hideTimePicker();
-        if (moment(selectedDate).isSame(moment(), 'day') && moment(time).isBefore(moment(), 'hour')) {
+        const currentDate = new Date(); // Data e hora atuais
+        if (moment(selectedDate).isSame(currentDate, 'day') && moment(time).isBefore(currentDate, 'hour')) {
             // Exibe um alerta de hora inválida
             Alert.alert('Hora Inválida', 'Por favor, selecione uma hora futura ou igual à hora atual.');
         } else {
@@ -61,8 +59,6 @@ const TripForm = ({ route, navigation }) => {
             setTrip({ ...trip, time: formattedTime });
         }
     };
-
-    const currentDate = new Date(); // Data e hora atuais
 
     return (
         <View style={styles.container}>
@@ -90,7 +86,7 @@ const TripForm = ({ route, navigation }) => {
                 onConfirm={handleDateConfirm}
                 onCancel={hideDatePicker}
                 date={selectedDate}
-                minimumDate={currentDate} // Define a data mínima como a data atual
+                minimumDate={new Date()} // Define a data mínima como a data atual
                 locale="pt_BR" // Define o idioma do picker
             />
             <Text>Hora:</Text>

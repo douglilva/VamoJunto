@@ -1,0 +1,45 @@
+import React from "react";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SuasViagens from "./cadastro/SuasViagens";
+import ChatScreen from "./cadastro/Chat";
+
+
+const Stack = createNativeStackNavigator();
+
+// Componente para o stack do SuasViagens
+const SuasViagensStack = ({ route }) => {
+    const { motoristaId } = route.params;
+    return (
+        <Stack.Navigator initialRouteName="SuasViagens">
+            <Stack.Screen
+                name="SuasViagens"
+                component={SuasViagens}
+                initialParams={{ motoristaId }}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#f4511e',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }} 
+            />
+            <Stack.Screen
+                name="ChatScreen"
+                component={ChatScreen}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#f4511e',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }}
+            />
+        </Stack.Navigator>
+    );
+};
+
+export default SuasViagensStack;

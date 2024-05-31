@@ -8,6 +8,7 @@ import EventForm from './cadastro/EventForm';
 import EventsContext from './cadastro/EventContextFile';
 import TripDetails from './cadastro/TripDetails';
 import TripForm from './cadastro/EventForm';
+import ChatScreen from './cadastro/Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,19 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
         }}
       />
       <Stack.Screen name="TripDetails" component={TripDetails} />
+      <Stack.Screen
+                name="ChatScreen"
+                component={ChatScreen}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#f4511e',
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }}
+            />
     </Stack.Navigator>
   );
 };

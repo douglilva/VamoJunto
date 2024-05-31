@@ -5,6 +5,7 @@ import Home from "./Home"
 import Perfil from "./Perfil"
 import SuasViagens from "./cadastro/SuasViagens"
 import Notificacao from "./Notificacao";
+import SuasViagensStack from "./SuasViagensStack"
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +38,7 @@ const TabNavigator = ({ route }) => {
             />
             <Tab.Screen
                 name="Suas viagens"
-                component={SuasViagens}
+                component={SuasViagensStack}
                 initialParams={{ motoristaId }}
                 options={{ headerShown: false }} 
             />

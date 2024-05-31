@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Alert, FlatList, TextInput } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 import TripsContext from './EventContextFile';
 
 // Componente para listar as viagens com as opções de participar e buscar por viagens
 export default function TripList({ route }) {
+    const navigation = useNavigation();
     const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
     const {motoristaId} = route.params;
@@ -39,7 +41,7 @@ export default function TripList({ route }) {
 
         return (
             <ListItem
-                onPress={() => props.navigation.navigate('TripDetails', trip)}
+                onPress={() => navigation.navigate('ChatScreen', {trip, motoristaId})}
                 bottomDivider>
                 <Avatar
                     rounded
