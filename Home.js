@@ -54,6 +54,7 @@ export default function Home({ route }) {
             <Stack.Screen
                 name="TripDetails"
                 component={TripDetails}
+                initialParams={{ motoristaId }}
                 options={{
                     title: 'Detalhes da Reserva'
                 }}

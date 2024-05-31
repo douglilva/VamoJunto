@@ -67,7 +67,7 @@ export default function OfferedTripsList({route}) {
         if (trip.driver == motoristaId.motoristaId && trip.parar==false) {
 
             return (
-                <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip })}>
+                <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip, motoristaId })}>
                     <ListItem bottomDivider>
                         <Avatar rounded source={{ uri: trip.avatarUrl || 'https://via.placeholder.com/150' }} />
                         <ListItem.Content>
