@@ -37,7 +37,7 @@ export default function TripList({ route, navigation }) {
     }
 
     function getTripsItems({ item: trip }) {
-        if (trip.driver === motoristaId || trip.availableSeats <= 0 || trip.passengers.includes(motoristaId)) {
+        if (trip.driver === motoristaId || trip.availableSeats <= 0 || trip.passengers.includes(motoristaId) || trip.parar== true) {
             return null;
         }
 

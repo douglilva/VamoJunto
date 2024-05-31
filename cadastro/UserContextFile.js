@@ -25,6 +25,7 @@ const actions = {
     createUsuario(state, action) {
         const usuario = action.payload;
         usuario.id = Math.random();
+        usuario.nota=5
         const updatedUsuarios = [usuario, ...state.usuarios];
         saveUsuarios(updatedUsuarios);
         return {
@@ -36,10 +37,12 @@ const actions = {
         const updated = action.payload;
         const updatedUsuarios = state.usuarios.map(u => u.id === updated.id ? updated : u);
         saveUsuarios(updatedUsuarios);
+        console.warn(updated);
         return {
             ...state,
             usuarios: updatedUsuarios
         };
+        
     },
     loadUsuarios(state, action) {
         const loadedUsuarios = action.payload.usuarios;

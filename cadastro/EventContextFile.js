@@ -27,8 +27,9 @@ const actions = {
     createTrip(state, action) {
         const trip = action.payload;
         trip.id = Math.random();
-        
+        trip.parar=false
         trip.passengers=[];
+        trip.avaliadores=[];
         trip.driverID;
         const updatedTrips = [trip, ...state.trips];
         saveTrips(updatedTrips);
@@ -41,6 +42,7 @@ const actions = {
         const updated = action.payload;
         const updatedTrips = state.trips.map(t => t.id === updated.id ? updated : t);
         saveTrips(updatedTrips);
+        console.warn(updated)
         return {
             ...state,
             trips: updatedTrips
@@ -76,6 +78,23 @@ const actions = {
     
         saveTrips(updatedTrips);
     
+        return {
+            ...state,
+            trips: updatedTrips
+        };
+    },
+
+    endTrip(state, action) {
+        const tripId = action.payload;
+        const updatedTrips = state.trips.map(trip =>
+            trip.id === tripId
+                ? {
+                    ...trip,
+                   parar:true
+                }
+                : trip
+        );
+        saveTrips(updatedTrips);
         return {
             ...state,
             trips: updatedTrips

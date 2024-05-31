@@ -27,6 +27,7 @@ export default function OfferedTripsList({route}) {
     };
 
     const handleEndTrip = (tripId) => {
+        
         Alert.alert('Encerrar Corrida', 'Deseja encerrar a corrida?', [
             {
                 text: 'Sim',
@@ -63,7 +64,7 @@ export default function OfferedTripsList({route}) {
     function getTripsItems({ item: trip }) {
         
         // Verifica se o motorista da viagem é diferente do motorista logado
-        if (trip.driver == motoristaId.motoristaId) {
+        if (trip.driver == motoristaId.motoristaId && trip.parar==false) {
 
             return (
                 <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip })}>

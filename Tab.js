@@ -4,6 +4,7 @@ import Gerenciar from "./Gerenciar"
 import Home from "./Home"
 import Perfil from "./Perfil"
 import SuasViagens from "./cadastro/SuasViagens"
+import Notificacao from "./Notificacao";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,12 @@ const TabNavigator = ({ route }) => {
             <Tab.Screen
                 name="Perfil"
                 component={Perfil}
+                initialParams={{ motoristaId }}
+                options={{ headerShown: false }} 
+            />
+            <Tab.Screen
+                name="Notificação"
+                component={Notificacao}
                 initialParams={{ motoristaId }}
                 options={{ headerShown: false }} 
             />
