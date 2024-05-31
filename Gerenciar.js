@@ -55,7 +55,7 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
                 icon={<Icon name="delete" size={25} color="white" />}
               />
               <Button
-                onPress={() => navigation.navigate('EventForm', { motoristaId:  motoristaId})}
+                onPress={() => navigation.navigate('TripForm', { motoristaId:  motoristaId})}
                 type="clear"
                 icon={<Icon name="add" size={25} color="white" />}
               />
