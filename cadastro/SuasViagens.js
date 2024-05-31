@@ -28,11 +28,9 @@ export default function TripList({ route }) {
     function getTripsItems({ item: trip }) {
         // Verifica se o motorista da viagem é igual ao motorista logado
         
-        if (!trip.passengers.includes(motoristaId)) {
+        if (trip.passengers.includes(motoristaId) && trip.parar==false) {
             // Se não for, retorna null para não renderizar este item na lista
-            return null;
-        }
-
+            
         const origin = trip.origin || 'Origem não informada';
         const destination = trip.destination || 'Destino não informado';
         const date = trip.date || 'Data não informada';
@@ -56,6 +54,11 @@ export default function TripList({ route }) {
                 {getActions(trip)}
             </ListItem>
         );
+        }else{
+            return null;
+        }
+
+        
     }
 
     // Busca por origem ou destino

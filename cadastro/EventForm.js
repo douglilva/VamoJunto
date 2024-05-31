@@ -1,13 +1,68 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Button } from '@rneui/themed';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import TripsContext from "./EventContextFile";
+import moment from "moment";
+import 'moment/locale/pt-br'; // Importa o idioma português
 
-// Componente que gera o formulário de viagem
+moment.locale('pt-br'); // Define o idioma para português
+
 const TripForm = ({ route, navigation }) => {
     const [trip, setTrip] = useState(route.params ? route.params : {});
     const { dispatch } = useContext(TripsContext);
     const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(trip.date ? new Date(trip.date) : new Date());
+    const [selectedTime, setSelectedTime] = useState(trip.time ? moment(trip.time, "HH:mm").toDate() : new Date());
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleDateConfirm = (date) => {
+        hideDatePicker();
+        setSelectedDate(date);
+        const formattedDate = moment(date).format('LL'); // Formato: "31 de dezembro de 2022"
+        setTrip({ ...trip, date: formattedDate });
+
+        // Se a data selecionada for igual à data atual
+        if (moment(date).isSame(moment(), 'day')) {
+            // Define a hora mínima como a hora atual
+            setSelectedTime(moment().toDate());
+        } else {
+            // Define a hora mínima como 00:00
+            setSelectedTime(moment().startOf('day').toDate());
+        }
+    };
+
+    const showTimePicker = () => {
+        setTimePickerVisibility(true);
+    };
+
+    const hideTimePicker = () => {
+        setTimePickerVisibility(false);
+    };
+
+    const handleTimeConfirm = (time) => {
+        hideTimePicker();
+        if (moment(selectedDate).isSame(moment(), 'day') && moment(time).isBefore(moment(), 'hour')) {
+            // Exibe um alerta de hora inválida
+            Alert.alert('Hora Inválida', 'Por favor, selecione uma hora futura ou igual à hora atual.');
+        } else {
+            setSelectedTime(time);
+            const formattedTime = moment(time).format('HH:mm');
+            setTrip({ ...trip, time: formattedTime });
+        }
+    };
+
+    const currentDate = new Date(); // Data e hora atuais
 
     return (
         <View style={styles.container}>
@@ -26,18 +81,30 @@ const TripForm = ({ route, navigation }) => {
                 value={trip.destination}
             />
             <Text>Data:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={date => setTrip({ ...trip, date })}
-                placeholder="Informe a data"
-                value={trip.date}
+            <TouchableOpacity onPress={showDatePicker} style={styles.dateInput}>
+                <Text>{trip.date || "Selecione a data"}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleDateConfirm}
+                onCancel={hideDatePicker}
+                date={selectedDate}
+                minimumDate={currentDate} // Define a data mínima como a data atual
+                locale="pt_BR" // Define o idioma do picker
             />
             <Text>Hora:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={time => setTrip({ ...trip, time })}
-                placeholder="Informe a hora"
-                value={trip.time}
+            <TouchableOpacity onPress={showTimePicker} style={styles.dateInput}>
+                <Text>{trip.time || "Selecione a hora"}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+                isVisible={isTimePickerVisible}
+                mode="time"
+                onConfirm={handleTimeConfirm}
+                onCancel={hideTimePicker}
+                date={selectedTime}
+                locale="pt_BR" // Define o idioma do picker
+                is24Hour={true} // Configura para o formato 24h
             />
             <Text>Assentos Disponíveis:</Text>
             <TextInput
@@ -50,7 +117,7 @@ const TripForm = ({ route, navigation }) => {
             <Button
                 title='Salvar'
                 onPress={() => {
-                    trip.driver=motoristaId,
+                    trip.driver = motoristaId;
                     dispatch({
                         type: trip.id ? 'updateTrip' : 'createTrip',
                         payload: trip,
@@ -71,6 +138,15 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
+        paddingHorizontal: 10,
+    },
+    dateInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 10,
+        justifyContent: 'center',
+        paddingHorizontal: 10,
     },
 });
 
