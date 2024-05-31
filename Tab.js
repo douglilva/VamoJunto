@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Gerenciar from "./Gerenciar"
 import Home from "./Home"
 import Perfil from "./Perfil"
+import SuasViagens from "./cadastro/SuasViagens"
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +31,12 @@ const TabNavigator = ({ route }) => {
             <Tab.Screen
                 name="Gerenciar"
                 component={Gerenciar}
+                initialParams={{ motoristaId }}
+                options={{ headerShown: false }} 
+            />
+            <Tab.Screen
+                name="Suas viagens"
+                component={SuasViagens}
                 initialParams={{ motoristaId }}
                 options={{ headerShown: false }} 
             />

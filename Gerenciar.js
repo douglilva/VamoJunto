@@ -3,10 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Icon } from '@rneui/themed';
 import { useContext } from 'react';
 import { Alert } from 'react-native';
-import EventList from './cadastro/EventList';
+import FilterList from './cadastro/FilterList';
 import EventForm from './cadastro/EventForm';
 import EventsContext from './cadastro/EventContextFile';
 import TripDetails from './cadastro/TripDetails';
+import TripForm from './cadastro/EventForm';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
 
   return (
     <Stack.Navigator
-      initialRouteName="EventList"
+      initialRouteName="FilterList"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#FFA500',
@@ -27,8 +28,8 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
         },
       }}>
       <Stack.Screen
-        name="EventList"
-        component={EventList}
+        name="FilterList"
+        component={FilterList}
         initialParams={{ motoristaId: motoristaId }}
         options={({ navigation }) => ({
           title: 'Lista de Eventos',
@@ -63,10 +64,10 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
         })}
       />
       <Stack.Screen
-        name="EventForm"
-        component={EventForm}
+        name="TripForm"
+        component={TripForm}
         options={{
-          title: 'Adicionar Evento',
+          title: 'Formulário de Viagem',
         }}
       />
       <Stack.Screen name="TripDetails" component={TripDetails} />

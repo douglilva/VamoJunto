@@ -14,7 +14,7 @@ const UserRegistrationForm = ({ navigation }) => {
     });
 
     useEffect(() => {
-        console.warn('Usuários salvos:', state.usuarios);
+        
     }, [state.usuarios]);
 
     const handleRegister = () => {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import FilterList from './cadastro/FilterList';
+import EventList from './cadastro/EventList';
 import ReservationForm from './cadastro/ReservationForm';
 import ReservationsList from './cadastro/ReservationsList';
 import EventsContext from './cadastro/EventContextFile';
+import TripDetails from './cadastro/TripDetails'
 
 //Componente stack do que é renderizado na aba home
 export default function Home({ route }) {
@@ -11,7 +12,7 @@ export default function Home({ route }) {
     const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
     return (
         <Stack.Navigator
-            initialRouteName='FilterList'
+            initialRouteName='EventList'
             screenOptions={screenOptions}>
 
             {/* Tela para listar os eventos */}
@@ -24,8 +25,8 @@ export default function Home({ route }) {
             </Stack.Screen> */}
 
             <Stack.Screen
-                name="FilterList"
-                component={FilterList}
+                name="EventList"
+                component={EventList}
                 initialParams={{ motoristaId: motoristaId }}
                 options={{
                     title: 'Encontrar corrida'
@@ -47,6 +48,14 @@ export default function Home({ route }) {
                 component={ReservationsList}
                 options={{
                     title: 'Lista de Reservas'
+                }}
+            />
+
+            <Stack.Screen
+                name="TripDetails"
+                component={TripDetails}
+                options={{
+                    title: 'Detalhes da Reserva'
                 }}
             />
         </Stack.Navigator>

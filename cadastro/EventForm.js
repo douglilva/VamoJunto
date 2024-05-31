@@ -51,7 +51,6 @@ const TripForm = ({ route, navigation }) => {
                 title='Salvar'
                 onPress={() => {
                     trip.driver=motoristaId,
-                    console.warn(trip.driver)
                     dispatch({
                         type: trip.id ? 'updateTrip' : 'createTrip',
                         payload: trip,

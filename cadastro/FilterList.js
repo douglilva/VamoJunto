@@ -3,6 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, Alert } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import TripsContext from './EventContextFile';
+import TripForm from './EventForm';
 
 export default function OfferedTripsList({route}) {
     const { state, dispatch } = useContext(TripsContext);
@@ -10,14 +11,14 @@ export default function OfferedTripsList({route}) {
     const motoristaId=route.params;
 
     const handleEditTrip = (trip) => {
-        navigation.navigate('EditTripForm', { trip });
+        navigation.navigate('TripForm', trip );
     };
 
-    const handleDeleteTrip = (tripId) => {
+    const handleDeleteTrip = (trip) => {
         Alert.alert('Excluir Corrida', 'Deseja excluir a corrida?', [
             {
                 text: 'Sim',
-                onPress: () => dispatch({ type: 'deleteTrip', payload: tripId })
+                onPress: () => dispatch({ type: 'deleteTrip', payload: trip })
             },
             {
                 text: 'Não'
@@ -51,7 +52,7 @@ export default function OfferedTripsList({route}) {
                     icon={<Icon name='stop' size={25} color='red' />}
                 />
                 <Button
-                    onPress={() => handleDeleteTrip(trip.id)}
+                    onPress={() => handleDeleteTrip(trip)}
                     type='clear'
                     icon={<Icon name='delete' size={25} color='gray' />}
                 />
@@ -62,7 +63,7 @@ export default function OfferedTripsList({route}) {
     function getTripsItems({ item: trip }) {
         
         // Verifica se o motorista da viagem é diferente do motorista logado
-        if (trip.driver !== motoristaId.motoristaId) {
+        if (trip.driver == motoristaId.motoristaId) {
 
             return (
                 <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip })}>

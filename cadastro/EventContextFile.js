@@ -27,7 +27,7 @@ const actions = {
     createTrip(state, action) {
         const trip = action.payload;
         trip.id = Math.random();
-        trip.spaces = 0; // Iniciando com 0 passageiros
+        
         trip.passengers=[];
         trip.driverID;
         const updatedTrips = [trip, ...state.trips];
@@ -61,16 +61,17 @@ const actions = {
         }
     },
     addPassenger(state, action) {
-        const { tripId, passengerId } = action.payload;
+        const { tripId, motoristaId } = action.payload;
     
         const updatedTrips = state.trips.map(trip =>
             trip.id === tripId
                 ? {
                     ...trip,
-                    passengers: [...(trip.passengers || []), passengerId],
+                    passengers: [...(trip.passengers || []), motoristaId],
                     availableSeats: trip.availableSeats - 1
                   }
                 : trip
+                
         );
     
         saveTrips(updatedTrips);
@@ -82,13 +83,13 @@ const actions = {
     },
 
     removePassenger(state, action) {
-        const { tripId, passengerId } = action.payload;
+        const { tripId, motoristaId } = action.payload;
         const updatedTrips = state.trips.map(trip =>
             trip.id === tripId
                 ? {
                     ...trip,
                     availableSeats: trip.availableSeats + 1,
-                    passengers: trip.passengers.filter(id => id !== passengerId)
+                    passengers: trip.passengers.filter(id => id !== motoristaId)
                 }
                 : trip
         );

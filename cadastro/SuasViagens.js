@@ -4,40 +4,32 @@ import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import TripsContext from './EventContextFile';
 
 // Componente para listar as viagens com as opções de participar e buscar por viagens
-export default function TripList({ route, navigation }) {
+export default function TripList({ route }) {
     const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
-    const { motoristaId } = route.params;
-
+    const {motoristaId} = route.params;
+    
+    
     function participateInTrip(tripId) {
         // Aqui você deve substituir pelo ID do usuário atual
-        dispatch({ type: 'addPassenger', payload: { tripId, motoristaId } });
-    }
-
-    function cancelParticipationInTrip(tripId) {
-        dispatch({ type: 'removePassenger', payload: { tripId, passengerId: motoristaId } });
+        dispatch({ type: 'removePassenger', payload: { tripId, motoristaId } });
     }
 
     function getActions(trip) {
-        const isPassenger = trip.passengers.includes(motoristaId);
-
-        return isPassenger ? (
-            <Button
-                onPress={() => cancelParticipationInTrip(trip.id)}
-                type='clear'
-                icon={<Icon name='cancel' size={25} color='red' />}
-            />
-        ) : (
+        return (
             <Button
                 onPress={() => participateInTrip(trip.id)}
                 type='clear'
-                icon={<Icon name='check' size={25} color='green' />}
+                icon={<Icon name='cancel' size={25} color='red' />}
             />
         );
     }
 
     function getTripsItems({ item: trip }) {
-        if (trip.driver === motoristaId || trip.availableSeats <= 0 || trip.passengers.includes(motoristaId)) {
+        // Verifica se o motorista da viagem é igual ao motorista logado
+        
+        if (!trip.passengers.includes(motoristaId)) {
+            // Se não for, retorna null para não renderizar este item na lista
             return null;
         }
 
@@ -49,7 +41,7 @@ export default function TripList({ route, navigation }) {
 
         return (
             <ListItem
-                onPress={() => navigation.navigate('TripDetails', { trip })}
+                onPress={() => props.navigation.navigate('TripDetails', trip)}
                 bottomDivider>
                 <Avatar
                     rounded
@@ -66,6 +58,7 @@ export default function TripList({ route, navigation }) {
         );
     }
 
+    // Busca por origem ou destino
     const filteredTrips = state.trips.filter(trip =>
         (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
