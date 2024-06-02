@@ -74,7 +74,7 @@ export default function OfferedTripsList({route}) {
             return (
                 <TouchableOpacity onPress={() => navigation.navigate('TripDetails', { trip, motoristaId })}>
                     <ListItem bottomDivider>
-                        <Avatar rounded source={{ uri: trip.avatarUrl || 'https://via.placeholder.com/150' }} />
+                        
                         <ListItem.Content>
                             <ListItem.Title>{`${trip.origin} -> ${trip.destination}`}</ListItem.Title>
                             <ListItem.Subtitle>{`Data: ${trip.date}`}</ListItem.Subtitle>

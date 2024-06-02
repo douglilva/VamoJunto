@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Alert, Modal, Text } from 'react-native';
-import { Button } from '@rneui/themed';
+import { View, Alert, Modal, StyleSheet } from 'react-native';
+import { Button, Text, TextInput, Appbar } from 'react-native-paper'; // Importando Button, Text e TextInput do React Native Paper
 import UserContext from './cadastro/UserContextFile';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Importe o ícone que deseja usar
 
@@ -96,114 +96,137 @@ const ProfileScreen = ({ route, navigation }) => {
         }
     };
 
+    const handleLogout = () => {
+        navigation.navigate('Login');
+    };
+
     return (
-        <View style={styles.container}>
-            <Text>Nota do usuário:</Text>
-            <View style={styles.starsContainer}>
-                {renderStars()}
-                <Text style={styles.notaText}>{renderNotaText()}</Text>
-            </View>
-            <TextInput
-                style={styles.input}
-                value={user.name}
-                onChangeText={name => setUser({ ...user, name })}
-                placeholder="Nome"
-            />
-            <TextInput
-                style={styles.input}
-                value={user.document}
-                onChangeText={document => setUser({ ...user, document })}
-                placeholder="Documento"
-            />
-            <TextInput
-                style={styles.input}
-                value={user.email}
-                onChangeText={email => setUser({ ...user, email })}
-                placeholder="Email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                value={user.password}
-                onChangeText={password => setUser({ ...user, password })}
-                placeholder="Senha"
-                secureTextEntry
-            />
-            <Button title="Atualizar" onPress={handleUpdate} />
-            
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(false);
-                }}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Digite sua senha antiga para confirmar a atualização:</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={oldPassword}
-                            onChangeText={setOldPassword}
-                            placeholder="Senha Antiga"
-                            secureTextEntry
-                        />
-                        <Button title="Confirmar" onPress={confirmUpdate} />
-                        <Button title="Cancelar" onPress={() => setModalVisible(false)} />
-                    </View>
+        <View style={{ flex: 1 }}>
+            <Appbar.Header style={styles.appbar}>
+                <Appbar.Content title="Perfil" titleStyle={styles.title} />
+                <Appbar.Action icon="logout" onPress={handleLogout} />
+            </Appbar.Header>
+            <View style={styles.container}>
+                <Text>Nota do usuário:</Text>
+                <View style={styles.starsContainer}>
+                    {renderStars()}
+                    <Text style={styles.notaText}>{renderNotaText()}</Text>
                 </View>
-            </Modal>
-        </View>
-    );
+                <TextInput
+                    label="Nome"
+                    value={user.name}
+                    onChangeText={name => setUser({ ...user, name })}
+                    style={styles.input}
+                />
+                <TextInput
+                    label="Documento"
+                    value={user.document}
+                    onChangeText={document => setUser({ ...user, document })}
+                    style={styles.input}
+                />
+                <TextInput
+                    label="Email"
+                    value={user.email}
+                    onChangeText={email => setUser({ ...user, email })}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    style={styles.input}
+                />
+                <TextInput
+                    label="Senha"
+                    value={user.password}
+                    onChangeText={password => setUser({ ...user, password })}
+                    secureTextEntry
+                    style={styles.input}
+                />
+                <Button mode="contained" onPress={handleUpdate} style={styles.button}>
+                    Atualizar
+                </Button>
+                
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(false);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Digite sua senha antiga para confirmar a atualização:</Text>
+                            <TextInput
+                                label="Senha Antiga"
+                                value={oldPassword}
+                                onChangeText={setOldPassword}
+                                secureTextEntry
+                                style={styles.input}
+                            />
+                            <Button mode="contained" onPress={confirmUpdate} style={styles.button}>
+                                Confirmar
+                            </Button>
+                            <Button mode="contained"
+ onPress={() => setModalVisible(false)} style={styles.button}>
+ Cancelar
+</Button>
+</View>
+</View>
+</Modal>
+</View>
+</View>
+);
 };
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-    starsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    notaText: {
-        marginLeft: 5,
-        fontSize: 16,
-    },
+appbar: {
+backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
+},
+title: {
+color: '#ffffff', // Cor do texto do cabeçalho personalizada
+fontWeight: 'bold',
+},
+container: {
+padding: 20,
+},
+input: {
+marginBottom: 10,
+},
+button: {
+marginBottom: 10,
+},
+centeredView: {
+flex: 1,
+justifyContent: 'center',
+alignItems: 'center',
+marginTop: 22,
+},
+modalView: {
+margin: 20,
+backgroundColor: 'white',
+borderRadius: 20,
+padding: 35,
+alignItems: 'center',
+shadowColor: '#000',
+shadowOffset: {
+width: 0,
+height: 2,
+},
+shadowOpacity: 0.25,
+shadowRadius: 4,
+elevation: 5,
+},
+modalText: {
+marginBottom: 15,
+textAlign: 'center',
+},
+starsContainer: {
+flexDirection: 'row',
+alignItems: 'center',
+marginBottom: 10,
+},
+notaText: {
+marginLeft: 5,
+fontSize: 16,
+},
 });
 
 export default ProfileScreen;

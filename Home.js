@@ -4,16 +4,24 @@ import EventList from './cadastro/EventList';
 import ReservationForm from './cadastro/ReservationForm';
 import ReservationsList from './cadastro/ReservationsList';
 import EventsContext from './cadastro/EventContextFile';
-import TripDetails from './cadastro/TripDetails'
+import TripDetails from './cadastro/TripDetails';
 
-//Componente stack do que é renderizado na aba home
+// Componente stack do que é renderizado na aba home
 export default function Home({ route }) {
     const Stack = createNativeStackNavigator();
     const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
     return (
         <Stack.Navigator
             initialRouteName='EventList'
-            screenOptions={screenOptions}>
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
+                },
+                headerTintColor: '#ffffff', // Cor do texto do cabeçalho personalizada
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }}>
 
             {/* Tela para listar os eventos */}
             {/* <Stack.Screen
@@ -62,13 +70,3 @@ export default function Home({ route }) {
         </Stack.Navigator>
     );
 }
-
-const screenOptions = {
-    headerStyle: {
-        backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-        fontWeight: 'bold'
-    },
-};

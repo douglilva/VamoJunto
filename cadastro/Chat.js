@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import TripsContext from './EventContextFile';
 import UserContext, { getUserById } from './UserContextFile';
 
@@ -29,26 +30,31 @@ const ChatScreen = ({ route }) => {
   };
 
   return (
-    <View>
-      <Text>Chat da Viagem</Text>
-      <FlatList
-        data={updated.messages || []}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', marginVertical: 5 }}>
-            <Text style={{ fontWeight: 'bold' }}>{item.id === motoristaId ? 'Você: ' : `${getUserName(item.id)}: `}</Text>
-            <Text>{item.text}</Text>
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TextInput
-          style={{ flex: 1, borderWidth: 1, borderColor: 'gray', marginRight: 10 }}
-          placeholder="Digite sua mensagem"
-          value={newMessage.text}
-          onChangeText={(text) => setNewMessage({ ...newMessage, text })} // Atualiza o estado corretamente
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <Text>Chat da Viagem</Text>
+        <FlatList
+          data={updated.messages || []}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row', marginVertical: 5 }}>
+              <Text style={{ fontWeight: 'bold' }}>{item.id === motoristaId ? 'Você: ' : `${getUserName(item.id)}: `}</Text>
+              <Text>{item.text}</Text>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
         />
-        <Button title="Enviar" onPress={addMessage} />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+        <TextInput
+          style={{ flex: 1, marginRight: 10 }}
+          label="Digite sua mensagem"
+          value={newMessage.text}
+          onChangeText={(text) => setNewMessage({ ...newMessage, text })}
+          mode="outlined"
+        />
+        <Button mode="contained" onPress={addMessage}>
+          Enviar
+        </Button>
       </View>
     </View>
   );

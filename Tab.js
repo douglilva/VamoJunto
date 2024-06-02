@@ -1,5 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { DefaultTheme } from '@react-navigation/native';
 import Gerenciar from "./Gerenciar"
 import Home from "./Home"
 import Perfil from "./Perfil"
@@ -15,14 +17,44 @@ const TabNavigator = ({ route }) => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
-            screenOptions={{
-                tabBarActiveTintColor:'red',
-                tabBarInactiveTintColor: 'blue',
-                tabBarLabelStyle: {fontSize: 30},
-                tabBarOptions: {
-                    style: styles.tabBar, 
-                }
-            }}
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                    let iconName;
+
+                    switch (route.name) {
+                        case 'Home':
+                            iconName = 'home';
+                            break;
+                        case 'Gerenciar':
+                            iconName = 'cog';
+                            break;
+                        case 'Suas viagens':
+                            iconName = 'car';
+                            break;
+                        case 'Perfil':
+                            iconName = 'account';
+                            break;
+                        case 'Notificação':
+                            iconName = 'bell';
+                            break;
+                        default:
+                            iconName = 'home';
+                            break;
+                    }
+
+                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: '#6200ee', // Cor ativa personalizada
+                tabBarInactiveTintColor: '#757575', // Cor inativa personalizada
+                tabBarStyle: {
+                    backgroundColor: '#ffffff', // Cor de fundo personalizada
+                    borderTopColor: '#bdbdbd', // Cor da borda superior personalizada
+                    borderTopWidth: 2,
+                },
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
+            })}
         >
             <Tab.Screen
                 name="Home"
@@ -54,17 +86,8 @@ const TabNavigator = ({ route }) => {
                 initialParams={{ motoristaId }}
                 options={{ headerShown: false }} 
             />
-            {/* Adicione outras telas do Tab Navigator aqui */}
         </Tab.Navigator>
     );
-}
-
-const styles = {
-    tabBar: {  
-        borderTopColor: 'orange',
-        borderTopWidth: 2,
-        backgroundColor: 'orange', 
-    },
 }
 
 export default TabNavigator;

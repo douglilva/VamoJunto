@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Button } from '@rneui/themed';
+import { View, StyleSheet } from "react-native";
+import { TextInput, Button, Title, Portal, Modal, Paragraph, Text, TouchableRipple } from 'react-native-paper';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import TripsContext from "./EventContextFile";
 import moment from "moment";
@@ -17,6 +17,8 @@ const TripForm = ({ route, navigation }) => {
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(trip.date ? moment(trip.date, "LL").toDate() : new Date());
     const [selectedTime, setSelectedTime] = useState(trip.time ? moment(trip.time, "HH:mm").toDate() : new Date());
+    const [visible, setVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -30,8 +32,8 @@ const TripForm = ({ route, navigation }) => {
         hideDatePicker();
         const currentDate = new Date(); // Data e hora atuais
         if (moment(date).isBefore(currentDate, 'day')) {
-            // Exibe um alerta de data inválida
-            Alert.alert('Data Inválida', 'Por favor, selecione uma data futura.');
+            setErrorMessage('Por favor, selecione uma data futura.');
+            setVisible(true); // Mostrar o modal de erro
         } else {
             setSelectedDate(date);
             const formattedDate = moment(date).format('LL'); // Formato: "31 de dezembro de 2022"
@@ -51,8 +53,8 @@ const TripForm = ({ route, navigation }) => {
         hideTimePicker();
         const currentDate = new Date(); // Data e hora atuais
         if (moment(selectedDate).isSame(currentDate, 'day') && moment(time).isBefore(currentDate, 'hour')) {
-            // Exibe um alerta de hora inválida
-            Alert.alert('Hora Inválida', 'Por favor, selecione uma hora futura ou igual à hora atual.');
+            setErrorMessage('Por favor, selecione uma hora futura ou igual à hora atual.');
+            setVisible(true); // Mostrar o modal de erro
         } else {
             setSelectedTime(time);
             const formattedTime = moment(time).format('HH:mm');
@@ -60,26 +62,37 @@ const TripForm = ({ route, navigation }) => {
         }
     };
 
+    const hideModal = () => setVisible(false);
+
     return (
         <View style={styles.container}>
-            <Text>Origem:</Text>
+            <Title>Formulário de Viagem</Title>
             <TextInput
                 style={styles.input}
+                label="Origem"
                 onChangeText={origin => setTrip({ ...trip, origin })}
                 placeholder="Informe a origem"
                 value={trip.origin}
+                mode="outlined"
             />
-            <Text>Destino:</Text>
             <TextInput
                 style={styles.input}
+                label="Destino"
                 onChangeText={destination => setTrip({ ...trip, destination })}
                 placeholder="Informe o destino"
                 value={trip.destination}
+                mode="outlined"
             />
-            <Text>Data:</Text>
-            <TouchableOpacity onPress={showDatePicker} style={styles.dateInput}>
-                <Text>{trip.date || "Selecione a data"}</Text>
-            </TouchableOpacity>
+            <TouchableRipple onPress={showDatePicker}>
+                <View pointerEvents="none">
+                    <TextInput
+                        label="Data"
+                        value={trip.date || ""}
+                        mode="outlined"
+                        style={styles.input}
+                    />
+                </View>
+            </TouchableRipple>
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
@@ -89,10 +102,16 @@ const TripForm = ({ route, navigation }) => {
                 minimumDate={new Date()} // Define a data mínima como a data atual
                 locale="pt_BR" // Define o idioma do picker
             />
-            <Text>Hora:</Text>
-            <TouchableOpacity onPress={showTimePicker} style={styles.dateInput}>
-                <Text>{trip.time || "Selecione a hora"}</Text>
-            </TouchableOpacity>
+            <TouchableRipple onPress={showTimePicker}>
+                <View pointerEvents="none">
+                    <TextInput
+                        label="Hora"
+                        value={trip.time || ""}
+                        mode="outlined"
+                        style={styles.input}
+                    />
+                </View>
+            </TouchableRipple>
             <DateTimePickerModal
                 isVisible={isTimePickerVisible}
                 mode="time"
@@ -102,16 +121,17 @@ const TripForm = ({ route, navigation }) => {
                 locale="pt_BR" // Define o idioma do picker
                 is24Hour={true} // Configura para o formato 24h
             />
-            <Text>Assentos Disponíveis:</Text>
             <TextInput
                 style={styles.input}
+                label="Assentos Disponíveis"
                 onChangeText={availableSeats => setTrip({ ...trip, availableSeats: parseInt(availableSeats) })}
                 placeholder="Informe o número de assentos disponíveis"
                 value={trip.availableSeats ? trip.availableSeats.toString() : ""}
                 keyboardType="numeric"
+                mode="outlined"
             />
             <Button
-                title='Salvar'
+                mode="contained"
                 onPress={() => {
                     trip.driver = motoristaId;
                     dispatch({
@@ -120,7 +140,20 @@ const TripForm = ({ route, navigation }) => {
                     });
                     navigation.goBack();
                 }}
-            />
+                style={styles.button}
+            >
+                Salvar
+            </Button>
+
+            <Portal>
+                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
+                    <Text style={styles.modalTitle}>Erro</Text>
+                    <Paragraph>{errorMessage}</Paragraph>
+                    <Button mode="contained" onPress={hideModal} style={styles.modalButton}>
+                        Ok
+                    </Button>
+                </Modal>
+            </Portal>
         </View>
     );
 };
@@ -130,19 +163,24 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        paddingHorizontal: 10,
+        marginBottom: 16,
     },
-    dateInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        justifyContent: 'center',
-        paddingHorizontal: 10,
+    button: {
+        marginTop: 16,
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        margin: 20,
+        borderRadius: 4,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+    modalButton: {
+        marginTop: 16,
     },
 });
 

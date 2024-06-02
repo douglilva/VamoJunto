@@ -17,11 +17,11 @@ const SuasViagensStack = ({ route }) => {
                 initialParams={{ motoristaId }}
                 options={{
                     headerStyle: {
-                        backgroundColor: '#f4511e',
+                        backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
                     },
-                    headerTintColor: '#fff',
+                    headerTintColor: '#ffffff', // Cor do texto do cabeçalho personalizada
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
                     },
                 }} 
             />
@@ -30,11 +30,11 @@ const SuasViagensStack = ({ route }) => {
                 component={ChatScreen}
                 options={{
                     headerStyle: {
-                        backgroundColor: '#f4511e',
+                        backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
                     },
-                    headerTintColor: '#fff',
+                    headerTintColor: '#ffffff', // Cor do texto do cabeçalho personalizada
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
                     },
                 }}
             />

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Alert, FlatList, TextInput } from 'react-native';
+import { View, Text, Alert, FlatList } from 'react-native';
+import { TextInput} from 'react-native-paper';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { AirbnbRating } from 'react-native-ratings';
 import TripsContext from './cadastro/EventContextFile';

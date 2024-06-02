@@ -12,18 +12,18 @@ import ChatScreen from './cadastro/Chat';
 
 const Stack = createNativeStackNavigator();
 
-const MainStack = ({ route }) => { // Receba o route como um parâmetro
+const MainStack = ({ route }) => {
   const { dispatch } = useContext(EventsContext);
-  const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
+  const { motoristaId } = route.params;
 
   return (
     <Stack.Navigator
       initialRouteName="FilterList"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#FFA500',
+          backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#ffffff', // Cor do texto do cabeçalho personalizada
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -73,18 +73,12 @@ const MainStack = ({ route }) => { // Receba o route como um parâmetro
       />
       <Stack.Screen name="TripDetails" component={TripDetails} />
       <Stack.Screen
-                name="ChatScreen"
-                component={ChatScreen}
-                options={{
-                    headerStyle: {
-                        backgroundColor: '#f4511e',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold'
-                    },
-                }}
-            />
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{
+          // Mantendo as opções de cabeçalho padrão
+        }}
+      />
     </Stack.Navigator>
   );
 };
