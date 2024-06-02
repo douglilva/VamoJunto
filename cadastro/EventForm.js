@@ -66,7 +66,6 @@ const TripForm = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Title>Formulário de Viagem</Title>
             <TextInput
                 style={styles.input}
                 label="Origem"

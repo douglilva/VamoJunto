@@ -16,6 +16,7 @@ const SuasViagensStack = ({ route }) => {
                 component={SuasViagens}
                 initialParams={{ motoristaId }}
                 options={{
+                    title: "Suas viagens",
                     headerStyle: {
                         backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
                     },
@@ -29,6 +30,7 @@ const SuasViagensStack = ({ route }) => {
                 name="ChatScreen"
                 component={ChatScreen}
                 options={{
+                    title: 'Chat da Viagem',
                     headerStyle: {
                         backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
                     },

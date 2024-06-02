@@ -32,7 +32,6 @@ const ChatScreen = ({ route }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <Text>Chat da Viagem</Text>
         <FlatList
           data={updated.messages || []}
           renderItem={({ item }) => (

@@ -33,7 +33,7 @@ const MainStack = ({ route }) => {
         component={FilterList}
         initialParams={{ motoristaId: motoristaId }}
         options={({ navigation }) => ({
-          title: 'Lista de Eventos',
+          title: 'Oferecer viagens',
           headerRight: () => (
             <>
               <Button
@@ -64,19 +64,28 @@ const MainStack = ({ route }) => {
           ),
         })}
       />
+      
       <Stack.Screen
         name="TripForm"
         component={TripForm}
         options={{
-          title: 'Formulário de Viagem',
+          title: 'Cadastrar uma nova viagem',
         }}
       />
-      <Stack.Screen name="TripDetails" component={TripDetails} />
+
+      <Stack.Screen 
+        name="TripDetails"
+        component={TripDetails} 
+        options={{
+          title: 'Detalhes',
+        }}
+      />
+  
       <Stack.Screen
         name="ChatScreen"
         component={ChatScreen}
         options={{
-          // Mantendo as opções de cabeçalho padrão
+          title: 'Chat da Viagem',
         }}
       />
     </Stack.Navigator>

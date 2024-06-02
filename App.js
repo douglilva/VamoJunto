@@ -6,6 +6,7 @@ import LoginScreen from './Login';
 import TabNavigator from './Tab';
 import { UserProvider } from './cadastro/UserContextFile';
 import { PaperProvider } from 'react-native-paper';
+import UserRegistrationForm from "./cadastro/ReservationForm"
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,14 @@ export default function App() {
                 name="Tabs"
                 component={TabNavigator}
                 options={{ headerShown: false }}
+              />
+               <Stack.Screen
+                name="UserRegistrationForm"
+                component={UserRegistrationForm} 
+                options={{
+                  title: 'Cadastre-se'
+              }}             
+                
               />
             </Stack.Navigator>
           </NavigationContainer>

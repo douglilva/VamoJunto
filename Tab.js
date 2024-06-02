@@ -1,19 +1,18 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { DefaultTheme } from '@react-navigation/native';
-import Gerenciar from "./Gerenciar"
-import Home from "./Home"
-import Perfil from "./Perfil"
-import SuasViagens from "./cadastro/SuasViagens"
+import Gerenciar from "./Gerenciar";
+import Home from "./Home";
+import Perfil from "./Perfil";
+import SuasViagens from "./cadastro/SuasViagens";
 import Notificacao from "./Notificacao";
-import SuasViagensStack from "./SuasViagensStack"
+import SuasViagensStack from "./SuasViagensStack";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ route }) => {
     const { motoristaId } = route.params;
-    
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -23,10 +22,10 @@ const TabNavigator = ({ route }) => {
 
                     switch (route.name) {
                         case 'Home':
-                            iconName = 'home';
+                            iconName = 'magnify';
                             break;
                         case 'Gerenciar':
-                            iconName = 'cog';
+                            iconName = 'plus';
                             break;
                         case 'Suas viagens':
                             iconName = 'car';
@@ -60,13 +59,13 @@ const TabNavigator = ({ route }) => {
                 name="Home"
                 component={Home}
                 initialParams={{ motoristaId }}
-                options={{ headerShown: false }} 
+                options={{ headerShown: false, tabBarLabel: 'Encontrar' }}
             />
             <Tab.Screen
                 name="Gerenciar"
                 component={Gerenciar}
                 initialParams={{ motoristaId }}
-                options={{ headerShown: false }} 
+                options={{ headerShown: false, tabBarLabel: 'Oferecer' }}
             />
             <Tab.Screen
                 name="Suas viagens"

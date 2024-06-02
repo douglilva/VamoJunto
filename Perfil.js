@@ -104,7 +104,7 @@ const ProfileScreen = ({ route, navigation }) => {
         <View style={{ flex: 1 }}>
             <Appbar.Header style={styles.appbar}>
                 <Appbar.Content title="Perfil" titleStyle={styles.title} />
-                <Appbar.Action icon="logout" onPress={handleLogout} />
+                <Appbar.Action icon="logout" onPress={handleLogout} color="#ffffff" />
             </Appbar.Header>
             <View style={styles.container}>
                 <Text>Nota do usuário:</Text>

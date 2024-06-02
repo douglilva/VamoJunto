@@ -3,6 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, Alert } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import TripsContext from './EventContextFile';
+import ChatScreen from './Chat';
 import TripForm from './EventForm';
 
 export default function OfferedTripsList({route}) {

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Alert, FlatList, TextInput } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { TextInput} from 'react-native-paper';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import TripsContext from './EventContextFile';
@@ -9,11 +10,9 @@ export default function TripList({ route }) {
     const navigation = useNavigation();
     const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
-    const {motoristaId} = route.params;
-    
-    
+    const { motoristaId } = route.params;
+
     function participateInTrip(tripId) {
-        // Aqui você deve substituir pelo ID do usuário atual
         dispatch({ type: 'removePassenger', payload: { tripId, motoristaId } });
     }
 
@@ -28,54 +27,44 @@ export default function TripList({ route }) {
     }
 
     function getTripsItems({ item: trip }) {
-        // Verifica se o motorista da viagem é igual ao motorista logado
-        
-        if (trip.passengers.includes(motoristaId) && trip.parar==false) {
-            // Se não for, retorna null para não renderizar este item na lista
-            
-        const origin = trip.origin || 'Origem não informada';
-        const destination = trip.destination || 'Destino não informado';
-        const date = trip.date || 'Data não informada';
-        const time = trip.time || 'Hora não informada';
-        const availableSeats = trip.availableSeats != null ? trip.availableSeats : 'Não informado';
+        if (trip.passengers.includes(motoristaId) && !trip.parar) {
+            const origin = trip.origin || 'Origem não informada';
+            const destination = trip.destination || 'Destino não informado';
+            const date = trip.date || 'Data não informada';
+            const time = trip.time || 'Hora não informada';
+            const availableSeats = trip.availableSeats != null ? trip.availableSeats : 'Não informado';
 
-        return (
-            <ListItem
-                onPress={() => navigation.navigate('ChatScreen', {trip, motoristaId})}
-                bottomDivider>
-                <Avatar
-                    rounded
-                    source={{ uri: trip.avatarUrl || 'https://via.placeholder.com/150' }} // Adicione uma URL de avatar padrão, se não disponível
-                />
-                <ListItem.Content>
-                    <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
-                    <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{`Assentos disponíveis: ${availableSeats}`}</ListItem.Subtitle>
-                </ListItem.Content>
-                {getActions(trip)}
-            </ListItem>
-        );
-        }else{
+            return (
+                <ListItem
+                    onPress={() => navigation.navigate('ChatScreen', { trip, motoristaId })}
+                    bottomDivider>
+                    <ListItem.Content>
+                        <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
+                        <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{`Assentos disponíveis: ${availableSeats}`}</ListItem.Subtitle>
+                    </ListItem.Content>
+                    {getActions(trip)}
+                </ListItem>
+            );
+        } else {
             return null;
         }
-
-        
     }
 
-    // Busca por origem ou destino
     const filteredTrips = state.trips.filter(trip =>
         (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10, padding: 5 }}
-                placeholder="Busque a origem ou destino"
-                onChangeText={text => setSearchTerm(text)}
+                style={styles.input}
+                label="Busque a origem ou destino"
                 value={searchTerm}
+                onChangeText={setSearchTerm}
+                mode="outlined"
             />
             <FlatList
                 keyExtractor={trip => trip.id.toString()}
@@ -85,3 +74,14 @@ export default function TripList({ route }) {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#fff',
+    },
+    input: {
+        marginBottom: 16,
+    },
+});

@@ -49,7 +49,7 @@ const LoginScreen = () => {
             </Button>
             <TouchableOpacity
                 style={styles.registerButton}
-                onPress={() => navigation.navigate('ReservationForm')}
+                onPress={() => navigation.navigate('UserRegistrationForm')}
             >
                 <Text style={styles.registerButtonText}>Cadastrar</Text>
             </TouchableOpacity>

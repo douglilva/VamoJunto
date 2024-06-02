@@ -37,7 +37,7 @@ export default function Home({ route }) {
                 component={EventList}
                 initialParams={{ motoristaId: motoristaId }}
                 options={{
-                    title: 'Encontrar corrida'
+                    title: 'Encontrar viagem'
                 }}
             />
 
@@ -55,7 +55,7 @@ export default function Home({ route }) {
                 name="ReservationList"
                 component={ReservationsList}
                 options={{
-                    title: 'Lista de Reservas'
+                    title: 'Lista de viagens'
                 }}
             />
 
@@ -64,7 +64,7 @@ export default function Home({ route }) {
                 component={TripDetails}
                 initialParams={{ motoristaId }}
                 options={{
-                    title: 'Detalhes da Reserva'
+                    title: 'Detalhes'
                 }}
             />
         </Stack.Navigator>
