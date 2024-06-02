@@ -46,22 +46,22 @@ export default function OfferedTripsList({route}) {
                 <Button
                     onPress={() => navigation.navigate('ChatScreen', {trip, motoristaId})}
                     type='clear'
-                    icon={<Icon name='chat' size={25} color='orange' />}
+                    icon={<Icon name='chat' size={25} color='#6200ee' />}
                 />
                 <Button
                     onPress={() => handleEditTrip(trip)}
                     type='clear'
-                    icon={<Icon name='edit' size={25} color='orange' />}
+                    icon={<Icon name='edit' size={25} color='#6200ee' />}
                 />
                 <Button
                     onPress={() => handleEndTrip(trip.id)}
                     type='clear'
-                    icon={<Icon name='stop' size={25} color='red' />}
+                    icon={<Icon name='stop' size={25} color='#6200ee' />}
                 />
                 <Button
                     onPress={() => handleDeleteTrip(trip)}
                     type='clear'
-                    icon={<Icon name='delete' size={25} color='gray' />}
+                    icon={<Icon name='delete' size={25} color='#6200ee' />}
                 />
             </>
         );

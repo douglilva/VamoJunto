@@ -56,23 +56,29 @@ export default function Notificacao({ route, navigation }) {
             const destination = trip.destination || 'Destino não informado';
             const date = trip.date || 'Data não informada';
             const time = trip.time || 'Hora não informada';
+            
             const availableSeats = trip.availableSeats != null ? trip.availableSeats : 'Não informado';
 
             return (
                 <ListItem
                     onPress={() => navigation.navigate('TripDetails', trip)}
                     bottomDivider
+                    containerStyle={styles.listItemContainer}
                 >
                     <ListItem.Content>
                         <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
                         <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
-                        <AirbnbRating
-                            count={5}
-                            reviews={["Péssimo", "Ruim", "Ok", "Bom", "Excelente"]}
-                            defaultRating={0}
-                            size={20}
-                            onFinishRating={(rating) => handleRatingCompleted(rating, trip)}
-                        />
+                        <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{`Esta viagem foi encerrada. Dê sua avaliação:`}</ListItem.Subtitle>
+                        <View style={styles.ratingContainer}>
+                            <AirbnbRating
+                                count={5}
+                                reviews={["Péssimo", "Ruim", "Ok", "Bom", "Excelente"]}
+                                defaultRating={0}
+                                size={20}
+                                onFinishRating={(rating) => handleRatingCompleted(rating, trip)}
+                            />
+                        </View>
                     </ListItem.Content>
                     {getActions(trip)}
                 </ListItem>
@@ -118,5 +124,13 @@ const styles = StyleSheet.create({
     },
     input: {
         margin: 10,
+    },
+    listItemContainer: {
+        paddingVertical: 8, // Ajuste o padding vertical conforme necessário
+    },
+    ratingContainer: {
+        marginBottom: -40,
+        top: -50,
+     
     },
 });

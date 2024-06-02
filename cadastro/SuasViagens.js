@@ -21,7 +21,7 @@ export default function TripList({ route }) {
             <Button
                 onPress={() => participateInTrip(trip.id)}
                 type='clear'
-                icon={<Icon name='cancel' size={25} color='red' />}
+                icon={<Icon name='cancel' size={35} color='#6200ee' />}
             />
         );
     }

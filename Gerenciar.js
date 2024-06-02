@@ -36,25 +36,7 @@ const MainStack = ({ route }) => {
           title: 'Oferecer viagens',
           headerRight: () => (
             <>
-              <Button
-                onPress={() =>
-                  Alert.alert('Apagar tudo', 'Deseja excluir a lista de eventos?', [
-                    {
-                      text: 'Sim',
-                      onPress: () => {
-                        dispatch({
-                          type: 'deleteAll',
-                        });
-                      },
-                    },
-                    {
-                      text: 'Não',
-                    },
-                  ])
-                }
-                type="clear"
-                icon={<Icon name="delete" size={25} color="white" />}
-              />
+             
               <Button
                 onPress={() => navigation.navigate('TripForm', { motoristaId:  motoristaId})}
                 type="clear"
