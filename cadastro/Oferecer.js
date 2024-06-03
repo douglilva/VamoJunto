@@ -1,11 +1,10 @@
+//imports
 import React, { useContext } from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity, Text, Alert, Image } from 'react-native';
 import { ListItem, Avatar, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
-import TripsContext from './EventContextFile';
-import ChatScreen from './Chat';
-import TripForm from './EventForm';
-import trajetoImage from './trajeto.png'
+import TripsContext from './TripContextFile';
+import trajetoImage from './assets/trajeto.png'
 
 export default function OfferedTripsList({route}) {
     const { state, dispatch } = useContext(TripsContext);
@@ -16,6 +15,7 @@ export default function OfferedTripsList({route}) {
         navigation.navigate('TripForm', trip );
     };
 
+//função de excluir viagem
     const handleDeleteTrip = (trip) => {
         Alert.alert('Excluir Viagem', 'Deseja excluir a viagem?', [
             {
@@ -28,6 +28,7 @@ export default function OfferedTripsList({route}) {
         ]);
     };
 
+//função de encerrar a viagem
     const handleEndTrip = (tripId) => {
         
         Alert.alert('Encerrar Viagem', 'Deseja encerrar a viagem?', [
@@ -41,6 +42,7 @@ export default function OfferedTripsList({route}) {
         ]);
     };
 
+    //exibir icones da funcoes
     function getActions(trip) {
         return (
             <>
@@ -68,9 +70,11 @@ export default function OfferedTripsList({route}) {
         );
     }
 
+    //retornar as viagems
     function getTripsItems({ item: trip }) {
         
-        // Verifica se o motorista da viagem é diferente do motorista logado
+        // Verifica se o motorista da viagem é igual do motorista logado
+        //e se a vigaem nao foi encerrada
         if (trip.driver == motoristaId && trip.parar==false) {
 
             return (
@@ -110,6 +114,7 @@ export default function OfferedTripsList({route}) {
     );
 }
 
+//stack das paginas com as funcoes
 export function OfferedTripsListStack() {
     return (
         <Stack.Navigator>
@@ -120,6 +125,7 @@ export function OfferedTripsListStack() {
     );
 }
 
+//input
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -150,11 +156,11 @@ const styles = StyleSheet.create({
         color: '#6200ee',
     },
     image: {
-        width: 50, // Ajuste o tamanho da imagem conforme necessário
-        height: 100, // Ajuste a altura da imagem conforme necessário
+        width: 50, 
+        height: 100, 
         marginRight: 10,
         marginLeft: -20,
-        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        transform: [{ rotate: '90deg' }], 
         resizeMode: 'contain',
     },
     titleContainer: {

@@ -1,7 +1,8 @@
+//imports
 import React, { useState, useContext } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import TripsContext from './EventContextFile';
+import TripsContext from './TripContextFile';
 import UserContext, { getUserById } from './UserContextFile';
 
 const ChatScreen = ({ route }) => {
@@ -11,6 +12,7 @@ const ChatScreen = ({ route }) => {
   const [newMessage, setNewMessage] = useState({ id: motoristaId, text: "" });
   const [updated, setUpdated] = useState(trip);
 
+//adiciona a mensagem na trip
   const addMessage = () => {
     const updatedTrip = {
       ...updated,
@@ -20,15 +22,17 @@ const ChatScreen = ({ route }) => {
       type: 'updateTrip',
       payload: updatedTrip
     });
-    setUpdated(updatedTrip); // Atualiza o estado com a nova mensagem
-    setNewMessage({ id: motoristaId, text: "" }); // Limpa o campo de mensagem depois de enviá-la
+    setUpdated(updatedTrip);
+    setNewMessage({ id: motoristaId, text: "" });
   };
 
+//encontra o usuario que escreveu a mensagem
   const getUserName = (userId) => {
     const user = getUserById(userState, userId);
     return user ? user.name : 'Outro';
   };
-
+  
+//mostra as mensagens
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>

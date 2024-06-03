@@ -1,36 +1,35 @@
+//imports
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Icon } from '@rneui/themed';
 import { useContext } from 'react';
-import { Alert } from 'react-native';
-import FilterList from './cadastro/FilterList';
-import EventForm from './cadastro/EventForm';
-import EventsContext from './cadastro/EventContextFile';
+import Oferecer from './cadastro/Oferecer';
+import TripsContext from './cadastro/TripContextFile';
 import TripDetails from './cadastro/TripDetails';
-import TripForm from './cadastro/EventForm';
+import TripForm from './cadastro/TripForm';
 import ChatScreen from './cadastro/Chat';
 
 const Stack = createNativeStackNavigator();
-
+//criando a stack
 const MainStack = ({ route }) => {
-  const { dispatch } = useContext(EventsContext);
+  const { dispatch } = useContext(TripsContext);
   const { motoristaId } = route.params;
-
+//screens
   return (
     <Stack.Navigator
-      initialRouteName="FilterList"
+      initialRouteName="Oferecer"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
+          backgroundColor: '#6200ee', 
         },
-        headerTintColor: '#ffffff', // Cor do texto do cabeçalho personalizada
+        headerTintColor: '#ffffff', 
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }}>
       <Stack.Screen
-        name="FilterList"
-        component={FilterList}
+        name="Oferecer"
+        component={Oferecer}
         initialParams={{ motoristaId: motoristaId }}
         options={({ navigation }) => ({
           title: 'Oferecer viagens',

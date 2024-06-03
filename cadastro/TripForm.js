@@ -1,18 +1,19 @@
+//imports 
 import React, { useContext, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput, Button, Title, Portal, Modal, Paragraph, Text, TouchableRipple } from 'react-native-paper';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import TripsContext from "./EventContextFile";
+import DateTimePickerModal from "react-native-modal-datetime-picker"; 
+import TripsContext from "./TripContextFile";
 import moment from "moment";
-import 'moment/locale/pt-br'; // Importa o idioma português
+import 'moment/locale/pt-br'; 
 
-moment.locale('pt-br'); // Define o idioma para português
+// Define o idioma do calendario para português
+moment.locale('pt-br'); 
 
 const TripForm = ({ route, navigation }) => {
     const [trip, setTrip] = useState(route.params ? route.params : {});
     const { dispatch } = useContext(TripsContext);
-    const { motoristaId } = route.params; // Recebe o motoristaId dos parâmetros da rota
-
+    const { motoristaId } = route.params; 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(trip.date ? moment(trip.date, "LL").toDate() : new Date());
@@ -20,6 +21,8 @@ const TripForm = ({ route, navigation }) => {
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
+
+    //funcoes para controlar exibicao do calendario
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -28,19 +31,22 @@ const TripForm = ({ route, navigation }) => {
         setDatePickerVisibility(false);
     };
 
+    //funcao para definir a data
     const handleDateConfirm = (date) => {
         hideDatePicker();
-        const currentDate = new Date(); // Data e hora atuais
+        const currentDate = new Date();
+        //verifica para nao selecionar datas
         if (moment(date).isBefore(currentDate, 'day')) {
             setErrorMessage('Por favor, selecione uma data futura.');
-            setVisible(true); // Mostrar o modal de erro
+            setVisible(true); 
         } else {
             setSelectedDate(date);
-            const formattedDate = moment(date).format('LL'); // Formato: "31 de dezembro de 2022"
+            const formattedDate = moment(date).format('LL'); 
             setTrip({ ...trip, date: formattedDate });
         }
     };
 
+    //funcoes para controlar exibicao do relogio
     const showTimePicker = () => {
         setTimePickerVisibility(true);
     };
@@ -49,12 +55,14 @@ const TripForm = ({ route, navigation }) => {
         setTimePickerVisibility(false);
     };
 
+    //funcoes para definir o horario
     const handleTimeConfirm = (time) => {
         hideTimePicker();
-        const currentDate = new Date(); // Data e hora atuais
+        const currentDate = new Date(); 
+        //verifica para nao definir horario no passado
         if (moment(selectedDate).isSame(currentDate, 'day') && moment(time).isBefore(currentDate, 'hour')) {
             setErrorMessage('Por favor, selecione uma hora futura ou igual à hora atual.');
-            setVisible(true); // Mostrar o modal de erro
+            setVisible(true); 
         } else {
             setSelectedTime(time);
             const formattedTime = moment(time).format('HH:mm');
@@ -62,8 +70,10 @@ const TripForm = ({ route, navigation }) => {
         }
     };
 
+    //variavel controle do modal caso selecionado data/hora incoerentes
     const hideModal = () => setVisible(false);
 
+    //inputs
     return (
         <View style={styles.container}>
             <TextInput
@@ -98,8 +108,8 @@ const TripForm = ({ route, navigation }) => {
                 onConfirm={handleDateConfirm}
                 onCancel={hideDatePicker}
                 date={selectedDate}
-                minimumDate={new Date()} // Define a data mínima como a data atual
-                locale="pt_BR" // Define o idioma do picker
+                minimumDate={new Date()}
+                locale="pt_BR" 
             />
             <TouchableRipple onPress={showTimePicker}>
                 <View pointerEvents="none">
@@ -117,8 +127,8 @@ const TripForm = ({ route, navigation }) => {
                 onConfirm={handleTimeConfirm}
                 onCancel={hideTimePicker}
                 date={selectedTime}
-                locale="pt_BR" // Define o idioma do picker
-                is24Hour={true} // Configura para o formato 24h
+                locale="pt_BR" 
+                is24Hour={true} 
             />
             <TextInput
                 style={styles.input}
@@ -157,6 +167,7 @@ const TripForm = ({ route, navigation }) => {
     );
 };
 
+//estilos
 const styles = StyleSheet.create({
     container: {
         padding: 20,

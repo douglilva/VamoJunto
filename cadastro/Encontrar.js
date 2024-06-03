@@ -1,47 +1,35 @@
+//imports
 import React, { useContext, useState } from 'react';
 import { View, StyleSheet, FlatList, Image } from 'react-native';
-import { TextInput, Button, Text, Title, Portal, Modal, Paragraph } from 'react-native-paper';
-import { ListItem, Avatar } from '@rneui/themed'; // Importei apenas o necessário para esta implementação
-import TripsContext from './EventContextFile';
-import trajetoImage from './trajeto.png'
+import { TextInput, Button, Text } from 'react-native-paper';
+import { ListItem } from '@rneui/themed'; 
+import TripsContext from './TripContextFile';
+import trajetoImage from './assets/trajeto.png'
+
 export default function TripList({ route, navigation }) {
     const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
     const { motoristaId } = route.params;
     const [visible, setVisible] = useState(false);
 
+    //se inscrever na trip
     function participateInTrip(tripId) {
         dispatch({ type: 'addPassenger', payload: { tripId, motoristaId } });
     }
 
-    function cancelParticipationInTrip(tripId) {
-        dispatch({ type: 'removePassenger', payload: { tripId, passengerId: motoristaId } });
-    }
-
     function getActions(trip) {
-        const isPassenger = trip.passengers.includes(motoristaId);
-
-        return isPassenger ? (
-            <Button
-                onPress={() => cancelParticipationInTrip(trip.id)}
-                mode='contained'
-                color='#FF0000'
-                style={styles.actionButton}
-            >
-                Cancelar Participação
-            </Button>
-        ) : (
+       
+        return (
             <Button
                 onPress={() => participateInTrip(trip.id)}
                 mode='contained'
-                color='#00FF00'
                 style={styles.actionButton}
             >
                 Participar
             </Button>
         );
     }
-
+    //mostrar as trips disponiveis
     function getTripsItems({ item: trip }) {
         if (trip.driver === motoristaId || trip.availableSeats <= 0 || trip.passengers.includes(motoristaId) || trip.parar) {
             return null;
@@ -74,14 +62,13 @@ export default function TripList({ route, navigation }) {
         );
     }
 
+    //Filtro para busca
     const filteredTrips = state.trips.filter(trip =>
         (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
-    const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
-
+    //retorna a busca
     return (
         <View style={styles.container}>
             <TextInput
@@ -96,20 +83,10 @@ export default function TripList({ route, navigation }) {
                 data={filteredTrips}
                 renderItem={getTripsItems}
             />
-
-            <Portal>
-                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Erro de Login</Text>
-                    <Paragraph>Email ou senha incorretos</Paragraph>
-                    <Button mode="contained" onPress={hideModal} style={styles.modalButton}>
-                        Ok
-                    </Button>
-                </Modal>
-            </Portal>
         </View>
     );
 }
-
+//estilos
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -140,11 +117,11 @@ const styles = StyleSheet.create({
         color: '#6200ee',
     },
     image: {
-        width: 50, // Ajuste o tamanho da imagem conforme necessário
-        height: 100, // Ajuste a altura da imagem conforme necessário
+        width: 50, 
+        height: 100, 
         marginRight: 10,
         marginLeft: -20,
-        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        transform: [{ rotate: '90deg' }],
         resizeMode: 'contain',
     },
     titleContainer: {
@@ -155,21 +132,5 @@ const styles = StyleSheet.create({
     },
     actionButton: {
         marginTop: 0,
-    },
-    modalContainer: {
-        backgroundColor: 'white',
-        padding: 20,
-        margin: 20,
-        borderRadius: 4,
-    },
-    modalTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        textAlign: 'center',
-    },
-    modalButton: {
-        marginTop: 16,
-        alignSelf: 'center',
     },
 });

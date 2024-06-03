@@ -1,10 +1,11 @@
+//imports
 import React, { useContext, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { ListItem, Button, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
-import TripsContext from './EventContextFile';
-import trajetoImage from './trajeto.png'; // Verifique se a imagem está no caminho correto
+import TripsContext from './TripContextFile';
+import trajetoImage from './assets/trajeto.png'; 
 
 // Componente para listar as viagens com as opções de participar e buscar por viagens
 export default function TripList({ route }) {
@@ -13,10 +14,12 @@ export default function TripList({ route }) {
     const [searchTerm, setSearchTerm] = useState('');
     const { motoristaId } = route.params;
 
+    //remove o passageiro se usuario cancelar particacao
     function participateInTrip(tripId) {
         dispatch({ type: 'removePassenger', payload: { tripId, motoristaId } });
     }
 
+    //botao para cancelar participacao
     function getActions(trip) {
         return (
             <Button
@@ -27,7 +30,9 @@ export default function TripList({ route }) {
         );
     }
 
+    //funcao para exibir as viagens
     function getTripsItems({ item: trip }) {
+        //verifica se o usuario esta incluso na lista de passageiros
         if (trip.passengers.includes(motoristaId) && !trip.parar) {
             const origin = trip.origin || 'Origem não informada';
             const destination = trip.destination || 'Destino não informado';
@@ -59,11 +64,13 @@ export default function TripList({ route }) {
         }
     }
 
+    //filtro para a busca
     const filteredTrips = state.trips.filter(trip =>
         (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    //exibir caixa de busca
     return (
         <View style={styles.container}>
             <TextInput
@@ -82,6 +89,7 @@ export default function TripList({ route }) {
     );
 }
 
+//estilos
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -112,11 +120,11 @@ const styles = StyleSheet.create({
         color: '#6200ee',
     },
     image: {
-        width: 50, // Ajuste o tamanho da imagem conforme necessário
-        height: 100, // Ajuste a altura da imagem conforme necessário
+        width: 50, 
+        height: 100, 
         marginRight: 10,
         marginLeft: -20,
-        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        transform: [{ rotate: '90deg' }], 
         resizeMode: 'contain',
     },
     titleContainer: {

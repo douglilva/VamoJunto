@@ -1,11 +1,12 @@
+//imports
 import React, { useContext, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
-import { TextInput, Button, Appbar } from 'react-native-paper';
-import { ListItem, Icon } from '@rneui/themed';
+import { TextInput } from 'react-native-paper';
+import { ListItem } from '@rneui/themed';
 import { AirbnbRating } from 'react-native-ratings';
-import TripsContext from './cadastro/EventContextFile';
+import TripsContext from './cadastro/TripContextFile';
 import UserContext, { getUserById } from './cadastro/UserContextFile';
-import trajetoImage from './cadastro/trajeto.png'; // Verifique se a imagem está no caminho correto
+import trajetoImage from './cadastro/assets/trajeto.png';
 
 export default function Notificacao({ route, navigation }) {
     const { state, dispatch } = useContext(TripsContext);
@@ -13,20 +14,8 @@ export default function Notificacao({ route, navigation }) {
     const [searchTerm, setSearchTerm] = useState('');
     const { motoristaId } = route.params;
 
-    function participateInTrip(tripId) {
-        dispatch({ type: 'removePassenger', payload: { tripId, motoristaId } });
-    }
-
-    function getActions(trip) {
-        return (
-            <Button
-                onPress={() => participateInTrip(trip.id)}
-                type='clear'
-                icon={<Icon name='cancel' size={25} color='red' />}
-            />
-        );
-    }
-
+    
+//Atualiza a nota do usuario
     function handleRatingCompleted(rating, trip) {
         const driver = getUserById(state_u, trip.driver);
         const currentRating = (driver.nota + rating) / 2;
@@ -50,7 +39,7 @@ export default function Notificacao({ route, navigation }) {
             payload: updatedDriver,
         });
     }
-
+//lista as viagens para notificação
     function getTripsItems({ item: trip }) {
         if (trip.passengers.includes(motoristaId) && trip.parar && !trip.avaliadores.includes(motoristaId)) {
             const origin = trip.origin || 'Origem não informada';
@@ -86,7 +75,7 @@ export default function Notificacao({ route, navigation }) {
                             />
                         </View>
                     </ListItem.Content>
-                    {getActions(trip)}
+                    
                 </ListItem>
             );
         } else {
@@ -94,11 +83,13 @@ export default function Notificacao({ route, navigation }) {
         }
     }
 
+    //filtro para a busca
     const filteredTrips = state.trips.filter(trip =>
         (trip.origin && trip.origin.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (trip.destination && trip.destination.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    //busca
     return (
         <View>
             <Appbar.Header style={styles.appbar}>
@@ -119,7 +110,7 @@ export default function Notificacao({ route, navigation }) {
         </View>
     );
 }
-
+//estilos
 const styles = StyleSheet.create({
     appbar: {
         backgroundColor: '#6200ee',
@@ -132,20 +123,20 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     listItemContainer: {
-        paddingVertical: 8, // Ajuste o padding vertical conforme necessário
+        paddingVertical: 8,
     },
     titulo: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#6200ee',
-        marginLeft: -20, // Ajuste de margem
+        marginLeft: -20,
     },
     titulo_destino: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#6200ee',
         marginTop: 10,
-        marginLeft: -20, // Ajuste de margem
+        marginLeft: -20,
     },
     subtitulo: {
         fontSize: 15,
@@ -159,11 +150,11 @@ const styles = StyleSheet.create({
         color: '#6200ee',
     },
     image: {
-        width: 50, // Ajuste o tamanho da imagem conforme necessário
-        height: 100, // Ajuste a altura da imagem conforme necessário
+        width: 50, 
+        height: 100,
         marginRight: 10,
-        marginLeft: -20, // Remoção de margem à esquerda
-        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        marginLeft: -20, 
+        transform: [{ rotate: '90deg' }],
         resizeMode: 'contain',
     },
     titleContainer: {

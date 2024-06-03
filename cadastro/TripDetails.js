@@ -1,18 +1,26 @@
+//imports
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
-import UserContext, { getUserById } from './UserContextFile'; // Importando o contexto de usuários e a função para buscar usuário pelo ID
+import UserContext, { getUserById } from './UserContextFile';
 
 const TripDetails = ({ route }) => {
     const { trip, motoristaId } = route.params;
-    const { state: userState } = useContext(UserContext); // Obtendo o estado do contexto de usuários
+    const { state: userState } = useContext(UserContext);
 
-    // Função para encontrar o nome do motorista com base no ID
+    // Encontrar o nome do motorista com base no ID
     const findDriverName = (driverId) => {
         const driver = getUserById(userState, driverId);
         return driver ? driver.name : 'Não encontrado';
     };
 
-    // Função para encontrar o nome de cada passageiro com base no ID
+    // Encontrar a nota do motorista com base no ID
+    const findDriverRate = (driverId) => {
+        const driver = getUserById(userState, driverId);
+        return driver ? driver.nota : 'Não encontrado';
+    };
+
+
+    // Encontrar o nome de cada passageiro com base no ID
     const findPassengerName = (passengerId) => {
         const passenger = getUserById(userState, passengerId);
         return passenger ? passenger.name : 'Não encontrado';
@@ -22,6 +30,7 @@ const TripDetails = ({ route }) => {
         <Text style={styles.text}>{findPassengerName(item)}</Text>
     );
 
+//mostrar os detalhes
     const renderContent = () => (
         <View style={styles.container}>
             <Text style={styles.text}><Text style={styles.bold}>Origem:</Text> {trip.origin}</Text>
@@ -44,17 +53,21 @@ const TripDetails = ({ route }) => {
                     )}
                 </>
             ) : (
+                <>
                 <Text style={styles.text}><Text style={styles.bold}>Nome do motorista:</Text> {findDriverName(trip.driver)}</Text>
+                <Text style={styles.text}><Text style={styles.bold}>Nota do motorista:</Text> {findDriverRate(trip.driver)}</Text>
+                </>
             )}
         </View>
     );
 
+    //Mostrar imagem de fundo
     return (
         <FlatList
             ListHeaderComponent={() => (
-                <Image source={require('./bora-la.png')} style={styles.image} />
+                <Image source={require('./assets/bora-la.png')} style={styles.image} />
             )}
-            data={[{ key: 'content' }]} // Dummy data to trigger rendering
+            data={[{ key: 'content' }]}
             renderItem={renderContent}
             keyExtractor={(item) => item.key}
             contentContainerStyle={styles.contentContainer}
@@ -63,10 +76,11 @@ const TripDetails = ({ route }) => {
     );
 };
 
+//Estilos
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
-        backgroundColor: '#ffffff', // Fundo da tela anterior
+        backgroundColor: '#ffffff', 
     },
     contentContainer: {
         flexGrow: 1,
@@ -74,19 +88,19 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 350,
-        resizeMode: 'contain', // Garantir que a imagem não seja cortada
+        resizeMode: 'contain', 
     },
     container: {
         flex: 1,
-        backgroundColor: '#6200ee', // Fundo do retângulo arredondado
+        backgroundColor: '#6200ee', 
         borderRadius: 20,
         padding: 20,
         marginHorizontal: 10,
         marginTop: 20,
-        flexGrow: 1, // Garantir que o contêiner se estenda para preencher o espaço
+        flexGrow: 1,
     },
     text: {
-        color: '#ffffff', // Cor do texto
+        color: '#ffffff',
         marginBottom: 10,
         fontSize:15,
     },

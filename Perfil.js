@@ -1,9 +1,11 @@
+//imports
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Alert, Modal, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Button, Text, TextInput, Appbar } from 'react-native-paper';
 import UserContext from './cadastro/UserContextFile';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import * as ImagePicker from 'expo-image-picker'; // Importando ImagePicker
+import * as ImagePicker from 'expo-image-picker';
+
 
 const ProfileScreen = ({ route, navigation }) => {
     const { motoristaId } = route.params;
@@ -34,7 +36,7 @@ const ProfileScreen = ({ route, navigation }) => {
             });
         }
     }, [currentUser]);
-
+//verifica se os campos estão preenchidos
     const handleUpdate = () => {
         if (!user.name.trim() || !user.document.trim() || !user.email.trim() || !user.password.trim()) {
             Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
@@ -43,7 +45,7 @@ const ProfileScreen = ({ route, navigation }) => {
 
         setModalVisible(true);
     };
-
+//autenticação para o update
     const confirmUpdate = () => {
         if (oldPassword !== currentUser.password) {
             Alert.alert('Erro', 'A senha antiga está incorreta.');
@@ -62,7 +64,7 @@ const ProfileScreen = ({ route, navigation }) => {
         dispatch({ type: 'updateUsuario', payload: updatedUser });
         setModalVisible(false);
     };
-
+//estrelas de avaliação
     const renderStars = () => {
         const stars = [];
         const integerPart = Math.floor(user.nota);
@@ -83,7 +85,7 @@ const ProfileScreen = ({ route, navigation }) => {
 
         return stars;
     };
-
+//avaliação usuário
     const renderNotaText = () => {
         if (user.nota >= 0 && user.nota < 2) {
             return 'Tem que melhorar :(';
@@ -99,11 +101,11 @@ const ProfileScreen = ({ route, navigation }) => {
             return '';
         }
     };
-
+//logout
     const handleLogout = () => {
         navigation.navigate('Login');
     };
-
+//pegar imagem da galeria
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -116,7 +118,7 @@ const ProfileScreen = ({ route, navigation }) => {
             setUser({ ...user, profileImage: result.assets[0].uri });
         }
     };
-
+//inputs de informação
     return (
         <View style={{ flex: 1 }}>
             <Appbar.Header style={styles.appbar}>
@@ -128,7 +130,7 @@ const ProfileScreen = ({ route, navigation }) => {
                     {user.profileImage ? (
                         <Image source={{ uri: user.profileImage }} style={styles.profileImage} />
                     ) : (
-                        <Image source={require('./cadastro/default.png')} style={styles.profileImage} />
+                        <Image source={require('./cadastro/assets/default.png')} style={styles.profileImage} />
                     )}
                 </TouchableOpacity>
                 <View style={styles.starsContainer}>
@@ -199,13 +201,13 @@ const ProfileScreen = ({ route, navigation }) => {
         </View>
     );
 };
-
+//estilos
 const styles = StyleSheet.create({
     appbar: {
-        backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
+        backgroundColor: '#6200ee', 
     },
     title: {
-        color: '#ffffff', // Cor do texto do cabeçalho personalizada
+        color: '#ffffff',
         fontWeight: 'bold',
     },
     container: {

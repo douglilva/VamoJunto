@@ -1,27 +1,14 @@
+//imports
 import React, { createContext, useEffect, useReducer, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+//componente de contexto para gerenciar usuarios armazenados com AsyncStorage
 const UserContext = createContext({});
 
 const initialState = { usuarios: [] };
 
 const actions = {
-    deleteAll(state, action) {
-        deleteUsuarios();
-        return {
-            ...state,
-            usuarios: []
-        };
-    },
-    deleteUsuario(state, action) {
-        const usuario = action.payload;
-        const updatedUsuarios = state.usuarios.filter(u => u.id !== usuario.id);
-        saveUsuarios(updatedUsuarios);
-        return {
-            ...state,
-            usuarios: updatedUsuarios
-        };
-    },
+    
     createUsuario(state, action) {
         const usuario = action.payload;
         usuario.id = Math.random();
@@ -98,15 +85,6 @@ async function loadUsuarios() {
     } catch (error) {
         console.error('Erro ao carregar os usuários do AsyncStorage', error);
         return { usuarios: [] };
-    }
-}
-
-async function deleteUsuarios() {
-    try {
-        await AsyncStorage.removeItem('usuarios');
-        console.log('Usuários removidos com sucesso');
-    } catch (error) {
-        console.error('Erro ao remover os usuários do AsyncStorage', error);
     }
 }
 

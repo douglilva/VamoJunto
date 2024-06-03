@@ -1,20 +1,14 @@
+//imports
 import React, { createContext, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import randomTrips from "./Events";
 
+//contexto com funcionalidades para gerenciar as viagens armazenadas com AsyncStorage
 const TripsContext = createContext({});
 
 const initialState = { trips: [] };
 
 const actions = {
 
-    deleteAll(state, action) {
-        deleteTrips();
-        return {
-            ...state,
-            trips: []
-        };
-    },
     deleteTrip(state, action) {
         const trip = action.payload;
         const updatedTrips = state.trips.filter(t => t.id !== trip.id);
@@ -54,13 +48,7 @@ const actions = {
             trips: loadedTrips
         };
     },
-    generateRandom(state, action) {
-        const loadedTrips = action.payload;
-        return {
-            ...state,
-            trips: loadedTrips,
-        }
-    },
+
     addPassenger(state, action) {
         const { tripId, motoristaId } = action.payload;
     
@@ -161,15 +149,6 @@ async function loadTrips() {
     } catch (error) {
         console.error('Erro ao carregar as viagens do AsyncStorage', error);
         return { trips: [] };
-    }
-}
-
-async function deleteTrips() {
-    try {
-        await AsyncStorage.removeItem('trips');
-        console.log('Viagens removidas com sucesso');
-    } catch (error) {
-        console.error('Erro ao remover as viagens do AsyncStorage', error);
     }
 }
 

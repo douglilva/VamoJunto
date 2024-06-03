@@ -1,15 +1,16 @@
+//import 
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Gerenciar from "./Gerenciar";
 import Home from "./Home";
 import Perfil from "./Perfil";
-import SuasViagens from "./cadastro/SuasViagens";
 import Notificacao from "./Notificacao";
 import SuasViagensStack from "./SuasViagensStack";
 
 const Tab = createBottomTabNavigator();
 
+//componente que tem o tab com as principais telas do aplicativo
 const TabNavigator = ({ route }) => {
     const { motoristaId } = route.params;
 
@@ -20,6 +21,7 @@ const TabNavigator = ({ route }) => {
                 tabBarIcon: ({ color, size }) => {
                     let iconName;
 
+                    //definicao dos icones do tab
                     switch (route.name) {
                         case 'Home':
                             iconName = 'magnify';
@@ -43,11 +45,12 @@ const TabNavigator = ({ route }) => {
 
                     return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
                 },
-                tabBarActiveTintColor: '#6200ee', // Cor ativa personalizada
-                tabBarInactiveTintColor: '#757575', // Cor inativa personalizada
+                //estilizacao do tab
+                tabBarActiveTintColor: '#6200ee', 
+                tabBarInactiveTintColor: '#757575', 
                 tabBarStyle: {
-                    backgroundColor: '#ffffff', // Cor de fundo personalizada
-                    borderTopColor: '#bdbdbd', // Cor da borda superior personalizada
+                    backgroundColor: '#ffffff',
+                    borderTopColor: '#bdbdbd', 
                     borderTopWidth: 2,
                 },
                 tabBarLabelStyle: {

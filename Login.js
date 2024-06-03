@@ -1,8 +1,9 @@
+//imports
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { TextInput, Button, Text, Title, Portal, Modal, Paragraph } from 'react-native-paper';
+import { TextInput, Button, Text, Portal, Modal, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import UserContext from './cadastro/UserContextFile'; // ajuste o caminho conforme necessário
+import UserContext from './cadastro/UserContextFile'; 
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -14,19 +15,19 @@ const LoginScreen = () => {
     const handleLogin = () => {
         const user = state.usuarios.find(u => u.email === email && u.password === password);
         if (user) {
-            // Se login for bem-sucedido, navegue para as tabs e passe o ID do motorista logado
+            // Se login der certo navega para o tab levando o id do motorista logado
             navigation.navigate('Tabs', { motoristaId: user.id });
         } else {
-            setVisible(true); // Mostrar o modal
+            setVisible(true);
         }
     };
 
     const hideModal = () => setVisible(false);
-
+//inputs de informação
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
-                <Image source={require('./cadastro/logo-vamojunto.png')} style={styles.image} />
+                <Image source={require('./cadastro/assets/logo-vamojunto.png')} style={styles.image} />
             </View>
 
             <View style={styles.content}>
@@ -72,7 +73,7 @@ const LoginScreen = () => {
         </View>
     );
 };
-
+//estilos
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -82,16 +83,16 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         alignItems: 'center',
-        marginTop: -100, // Mover a imagem para cima
+        marginTop: -100, 
         marginBottom: 16,
     },
     image: {
         width: '50%',
         height: 200,
-        resizeMode: 'contain', // Garantir que a imagem não seja cortada
+        resizeMode: 'contain', 
     },
     content: {
-        marginTop: -50, // Ajuste para manter a distância do título "Login"
+        marginTop: -50,
     },
     title: {
         fontSize: 24,

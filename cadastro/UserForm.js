@@ -1,3 +1,4 @@
+//imports
 import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, Alert, Image } from 'react-native';
 import { TextInput, Button, Text, Portal, Modal, Paragraph } from 'react-native-paper';
@@ -16,7 +17,7 @@ const UserRegistrationForm = ({ navigation }) => {
     });
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
+//acessar a galeria
     useEffect(() => {
         // Solicitar permissões de mídia no uso do aplicativo
         const requestPermission = async () => {
@@ -28,14 +29,14 @@ const UserRegistrationForm = ({ navigation }) => {
 
         requestPermission();
     }, []);
-
+//ver se tudo esta preenchido
     const handleRegister = () => {
         if (!user.name.trim() || !user.document.trim() || !user.email.trim() || !user.password.trim() || !user.confirmPassword.trim()) {
             setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
             setVisible(true);
             return;
         }
-
+//verifica as senhas
         if (user.password !== user.confirmPassword) {
             setErrorMessage('As senhas não coincidem.');
             setVisible(true);
@@ -53,7 +54,7 @@ const UserRegistrationForm = ({ navigation }) => {
         dispatch({ type: 'createUsuario', payload: newUser });
         navigation.goBack();
     };
-
+//função de escolher a imagem
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -68,7 +69,7 @@ const UserRegistrationForm = ({ navigation }) => {
     };
 
     const hideModal = () => setVisible(false);
-
+//inputs de informação
     return (
         <View style={styles.container}>
             {user.profileImage && (
@@ -128,7 +129,6 @@ const UserRegistrationForm = ({ navigation }) => {
             <Button mode="contained" onPress={handleRegister} style={styles.button}>
                 Cadastrar
             </Button>
-
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
                     <Text style={styles.modalTitle}>Erro</Text>
@@ -141,7 +141,7 @@ const UserRegistrationForm = ({ navigation }) => {
         </View>
     );
 };
-
+//estilos
 const styles = StyleSheet.create({
     container: {
         padding: 20,
