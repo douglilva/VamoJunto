@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, Alert, FlatList, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
 import { TextInput, Button, Appbar } from 'react-native-paper';
 import { ListItem, Icon } from '@rneui/themed';
 import { AirbnbRating } from 'react-native-ratings';
 import TripsContext from './cadastro/EventContextFile';
 import UserContext, { getUserById } from './cadastro/UserContextFile';
+import trajetoImage from './cadastro/trajeto.png'; // Verifique se a imagem está no caminho correto
 
 export default function Notificacao({ route, navigation }) {
     const { state, dispatch } = useContext(TripsContext);
@@ -56,8 +57,6 @@ export default function Notificacao({ route, navigation }) {
             const destination = trip.destination || 'Destino não informado';
             const date = trip.date || 'Data não informada';
             const time = trip.time || 'Hora não informada';
-            
-            const availableSeats = trip.availableSeats != null ? trip.availableSeats : 'Não informado';
 
             return (
                 <ListItem
@@ -66,12 +65,19 @@ export default function Notificacao({ route, navigation }) {
                     containerStyle={styles.listItemContainer}
                 >
                     <ListItem.Content>
-                        <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
-                        <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
-                        <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
-                        <ListItem.Subtitle>{`Esta viagem foi encerrada. Dê sua avaliação:`}</ListItem.Subtitle>
+                        <View style={styles.titleContainer}>
+                            <Image source={trajetoImage} style={styles.image} />
+                            <View>
+                                <Text style={styles.titulo}>{origin}</Text>
+                                <Text style={styles.titulo_destino}>{destination}</Text>
+                            </View>
+                        </View>
+                        <ListItem.Subtitle style={styles.subtitulo}><Text style={styles.bold}>Data:</Text> {date}</ListItem.Subtitle>
+                        <ListItem.Subtitle style={styles.subtitulo}><Text style={styles.bold}>Hora:</Text> {time}</ListItem.Subtitle>
+                        <ListItem.Subtitle style={styles.avalie}>{`Esta viagem foi encerrada.`}</ListItem.Subtitle>
+                        <ListItem.Subtitle style={styles.avalie}>{`Dê sua avaliação:`}</ListItem.Subtitle>
                         <View style={styles.ratingContainer}>
-                            <AirbnbRating
+                            <AirbnbRating 
                                 count={5}
                                 reviews={["Péssimo", "Ruim", "Ok", "Bom", "Excelente"]}
                                 defaultRating={0}
@@ -128,9 +134,43 @@ const styles = StyleSheet.create({
     listItemContainer: {
         paddingVertical: 8, // Ajuste o padding vertical conforme necessário
     },
+    titulo: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#6200ee',
+        marginLeft: -20, // Ajuste de margem
+    },
+    titulo_destino: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#6200ee',
+        marginTop: 10,
+        marginLeft: -20, // Ajuste de margem
+    },
+    subtitulo: {
+        fontSize: 15,
+    },
+    avalie: {
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    bold: {
+        fontWeight: 'bold',
+        color: '#6200ee',
+    },
+    image: {
+        width: 50, // Ajuste o tamanho da imagem conforme necessário
+        height: 100, // Ajuste a altura da imagem conforme necessário
+        marginRight: 10,
+        marginLeft: -20, // Remoção de margem à esquerda
+        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        resizeMode: 'contain',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     ratingContainer: {
-        marginBottom: -40,
-        top: -50,
-     
+        marginTop: -45,
     },
 });

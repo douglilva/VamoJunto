@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, Image } from 'react-native';
 import { TextInput, Button, Text, Title, Portal, Modal, Paragraph } from 'react-native-paper';
 import { ListItem, Avatar } from '@rneui/themed'; // Importei apenas o necessário para esta implementação
 import TripsContext from './EventContextFile';
-
+import trajetoImage from './trajeto.png'
 export default function TripList({ route, navigation }) {
     const { state, dispatch } = useContext(TripsContext);
     const [searchTerm, setSearchTerm] = useState('');
@@ -58,10 +58,16 @@ export default function TripList({ route, navigation }) {
                 onPress={() => navigation.navigate('TripDetails', { trip })}
                 bottomDivider>
                 <ListItem.Content>
-                    <ListItem.Title>{`${origin} -> ${destination}`}</ListItem.Title>
-                    <ListItem.Subtitle>{`Data: ${date}`}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{`Hora: ${time}`}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{`Assentos disponíveis: ${availableSeats}`}</ListItem.Subtitle>
+                        <View style={styles.titleContainer}>
+                            <Image source={trajetoImage} style={styles.image} />
+                            <View>
+                                <Text style={styles.titulo}>{origin}</Text>
+                                <Text style={styles.titulo_destino}>{destination}</Text>
+                            </View>
+                        </View>
+                        <ListItem.Subtitle style={styles.subtitulo}><Text style={styles.bold}>Data:</Text> {date}</ListItem.Subtitle>
+                        <ListItem.Subtitle style={styles.subtitulo}><Text style={styles.bold}>Hora:</Text> {time}</ListItem.Subtitle>
+                        <ListItem.Subtitle style={styles.subtitulo}><Text style={styles.bold}>Assentos disponíveis:</Text> {availableSeats}</ListItem.Subtitle>
                 </ListItem.Content>
                 {getActions(trip)}
             </ListItem>
@@ -107,20 +113,48 @@ export default function TripList({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         padding: 16,
         backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-        textAlign: 'center',
     },
     input: {
         marginBottom: 16,
     },
+    subtitulo: {
+        fontSize: 15,
+    },
+    titulo: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#6200ee',
+        marginLeft: -20,
+    },
+    titulo_destino: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#6200ee',
+        marginTop: 10,
+        marginLeft: -20,
+    },
+    bold: {
+        fontWeight: 'bold',
+        color: '#6200ee',
+    },
+    image: {
+        width: 50, // Ajuste o tamanho da imagem conforme necessário
+        height: 100, // Ajuste a altura da imagem conforme necessário
+        marginRight: 10,
+        marginLeft: -20,
+        transform: [{ rotate: '90deg' }], // Rotacionar a imagem
+        resizeMode: 'contain',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: -35,
+        marginBottom: -10,
+    },
     actionButton: {
-        marginTop: 16,
+        marginTop: 0,
     },
     modalContainer: {
         backgroundColor: 'white',

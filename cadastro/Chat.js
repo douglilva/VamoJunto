@@ -35,9 +35,22 @@ const ChatScreen = ({ route }) => {
         <FlatList
           data={updated.messages || []}
           renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row', marginVertical: 5 }}>
-              <Text style={{ fontWeight: 'bold' }}>{item.id === motoristaId ? 'Você: ' : `${getUserName(item.id)}: `}</Text>
-              <Text>{item.text}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginVertical: 5,
+                marginLeft: item.id === motoristaId ? 'auto' : 10,
+                marginRight: item.id === motoristaId ? 10 : 'auto',
+                alignSelf: item.id === motoristaId ? 'flex-end' : 'flex-start',
+                backgroundColor: item.id === motoristaId ? '#e0e0e0' : '#B6ACDE',
+                padding: 10,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ fontWeight: 'bold', fontSize: 20, color: "#6200ee" }}>
+                {item.id === motoristaId ? 'Você: ' : `${getUserName(item.id)}: `}
+              </Text>
+              <Text style={{ fontSize: 20 }}>{item.text}</Text>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
