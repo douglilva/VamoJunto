@@ -132,7 +132,9 @@ const ProfileScreen = ({ route, navigation }) => {
                     )}
                 </TouchableOpacity>
                 <View style={styles.starsContainer}>
-                    {renderStars()}
+                    {renderStars()} 
+                </View>
+                <View style={styles.starsContainer}>
                     <Text style={styles.notaText}>{renderNotaText()}</Text>
                 </View>
                 <TextInput
@@ -243,6 +245,7 @@ const styles = StyleSheet.create({
     starsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        alignSelf: 'center',
         marginBottom: 10,
     },
     notaText: {

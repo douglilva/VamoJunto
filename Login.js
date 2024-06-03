@@ -56,7 +56,7 @@ const LoginScreen = () => {
                     style={styles.registerButton}
                     onPress={() => navigation.navigate('UserRegistrationForm')}
                 >
-                    <Text style={styles.registerButtonText}>Cadastrar</Text>
+                    <Text style={styles.registerButtonText}>Não tem login? Cadastre-se</Text>
                 </TouchableOpacity>
             </View>
 

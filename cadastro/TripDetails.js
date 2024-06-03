@@ -66,7 +66,7 @@ const TripDetails = ({ route }) => {
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
-        backgroundColor: '#f9f9f9', // Fundo da tela anterior
+        backgroundColor: '#ffffff', // Fundo da tela anterior
     },
     contentContainer: {
         flexGrow: 1,
