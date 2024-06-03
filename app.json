@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Vamo Junto",
-    "slug": "Vamojunto",
+    "slug": "VamoJunto",
     "version": "1.0.0",
     "icon": "./logo-app-vamojunto.png",
     "assetBundlePatterns": [
@@ -21,7 +21,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "7d743ecd-1e53-42ee-9a7b-1aaf1576ca1f"
+        "projectId": "a6773e71-f74b-458d-9382-ef8e491a963d"
       }
     }
   }

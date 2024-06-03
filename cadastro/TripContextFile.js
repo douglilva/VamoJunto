@@ -113,9 +113,7 @@ export const TripsProvider = (props) => {
             const loadedTrips = await loadTrips();
             if (loadedTrips.trips && loadedTrips.trips.length !== 0) {
                 dispatch({ type: 'loadTrips', payload: loadedTrips });
-            } else {
-                dispatch({ type: 'generateRandom', payload: randomTrips });
-            }
+            } 
         }
         fetchData();
     }, []);
