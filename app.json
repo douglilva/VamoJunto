@@ -18,11 +18,6 @@
     },
     "web": {
       "favicon": "./logo-app-vamojunto.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "a6773e71-f74b-458d-9382-ef8e491a963d"
-      }
     }
   }
 }
