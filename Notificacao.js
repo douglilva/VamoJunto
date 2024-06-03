@@ -1,7 +1,7 @@
 //imports
 import React, { useContext, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, Image } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Appbar } from 'react-native-paper';
 import { ListItem } from '@rneui/themed';
 import { AirbnbRating } from 'react-native-ratings';
 import TripsContext from './cadastro/TripContextFile';

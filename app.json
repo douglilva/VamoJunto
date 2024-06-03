@@ -1,10 +1,28 @@
 {
   "expo": {
-    "name": "cadrasto",
-    "slug": "cadrasto",
+    "name": "Vamo Junto",
+    "slug": "Vamojunto",
     "version": "1.0.0",
+    "icon": "./logo-app-vamojunto.png",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./logo-app-vamojunto.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./logo-app-vamojunto.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7d743ecd-1e53-42ee-9a7b-1aaf1576ca1f"
+      }
+    }
   }
 }
