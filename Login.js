@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { TextInput, Button, Text, Title, Portal, Modal, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import UserContext from './cadastro/UserContextFile'; // ajuste o caminho conforme necessário
@@ -25,34 +25,40 @@ const LoginScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Title style={styles.title}>Login</Title>
-            <TextInput
-                style={styles.input}
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                mode="outlined"
-            />
-            <TextInput
-                style={styles.input}
-                label="Senha"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                autoCapitalize="none"
-                mode="outlined"
-            />
-            <Button mode="contained" onPress={handleLogin} style={styles.button}>
-                Entrar
-            </Button>
-            <TouchableOpacity
-                style={styles.registerButton}
-                onPress={() => navigation.navigate('UserRegistrationForm')}
-            >
-                <Text style={styles.registerButtonText}>Cadastrar</Text>
-            </TouchableOpacity>
+            <View style={styles.imageContainer}>
+                <Image source={require('./cadastro/logo-vamojunto.png')} style={styles.image} />
+            </View>
+
+            <View style={styles.content}>
+                
+                <TextInput
+                    style={styles.input}
+                    label="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    mode="outlined"
+                />
+                <TextInput
+                    style={styles.input}
+                    label="Senha"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    mode="outlined"
+                />
+                <Button mode="contained" onPress={handleLogin} style={styles.button}>
+                    Entrar
+                </Button>
+                <TouchableOpacity
+                    style={styles.registerButton}
+                    onPress={() => navigation.navigate('UserRegistrationForm')}
+                >
+                    <Text style={styles.registerButtonText}>Cadastrar</Text>
+                </TouchableOpacity>
+            </View>
 
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
@@ -73,6 +79,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 16,
         backgroundColor: '#fff',
+    },
+    imageContainer: {
+        alignItems: 'center',
+        marginTop: -100, // Mover a imagem para cima
+        marginBottom: 16,
+    },
+    image: {
+        width: '50%',
+        height: 200,
+        resizeMode: 'contain', // Garantir que a imagem não seja cortada
+    },
+    content: {
+        marginTop: -50, // Ajuste para manter a distância do título "Login"
     },
     title: {
         fontSize: 24,

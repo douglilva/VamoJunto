@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Image } from 'react-native';
 import { TextInput, Button, Text, Portal, Modal, Paragraph } from 'react-native-paper';
 import UserContext from './UserContextFile';
+import * as ImagePicker from 'expo-image-picker';
 
 const UserRegistrationForm = ({ navigation }) => {
     const { state, dispatch } = useContext(UserContext);
@@ -10,14 +11,23 @@ const UserRegistrationForm = ({ navigation }) => {
         document: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        profileImage: null
     });
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        
-    }, [state.usuarios]);
+        // Solicitar permissões de mídia no uso do aplicativo
+        const requestPermission = async () => {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Desculpe, precisamos da permissão da galeria para isso funcionar!');
+            }
+        };
+
+        requestPermission();
+    }, []);
 
     const handleRegister = () => {
         if (!user.name.trim() || !user.document.trim() || !user.email.trim() || !user.password.trim() || !user.confirmPassword.trim()) {
@@ -36,36 +46,55 @@ const UserRegistrationForm = ({ navigation }) => {
             name: user.name,
             document: user.document,
             email: user.email,
-            password: user.password
+            password: user.password,
+            profileImage: user.profileImage
         };
 
         dispatch({ type: 'createUsuario', payload: newUser });
         navigation.goBack();
     };
 
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setUser({ ...user, profileImage: result.assets[0].uri });
+        }
+    };
+
     const hideModal = () => setVisible(false);
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Nome:</Text>
+            {user.profileImage && (
+                <Image source={{ uri: user.profileImage }} style={styles.profileImage} />
+            )}
             <TextInput
                 style={styles.input}
+                label="Nome"
                 value={user.name}
                 onChangeText={name => setUser({ ...user, name })}
                 placeholder="Informe seu nome"
                 mode="outlined"
+                autoCapitalize="none"
             />
-            <Text style={styles.label}>Documento:</Text>
             <TextInput
                 style={styles.input}
+                label="Documento"
                 value={user.document}
                 onChangeText={document => setUser({ ...user, document })}
                 placeholder="Informe o número do seu documento"
                 mode="outlined"
+                autoCapitalize="none"
             />
-            <Text style={styles.label}>Email:</Text>
             <TextInput
                 style={styles.input}
+                label="Email"
                 value={user.email}
                 onChangeText={email => setUser({ ...user, email })}
                 placeholder="Informe seu email"
@@ -73,24 +102,29 @@ const UserRegistrationForm = ({ navigation }) => {
                 autoCapitalize="none"
                 mode="outlined"
             />
-            <Text style={styles.label}>Senha:</Text>
             <TextInput
                 style={styles.input}
+                label="Senha"
                 value={user.password}
                 onChangeText={password => setUser({ ...user, password })}
                 placeholder="Informe sua senha"
                 secureTextEntry
                 mode="outlined"
+                autoCapitalize="none"
             />
-            <Text style={styles.label}>Confirmar Senha:</Text>
             <TextInput
                 style={styles.input}
+                label="Confirmar Senha"
                 value={user.confirmPassword}
                 onChangeText={confirmPassword => setUser({ ...user, confirmPassword })}
                 placeholder="Confirme sua senha"
                 secureTextEntry
                 mode="outlined"
+                autoCapitalize="none"
             />
+            <Button mode="contained" onPress={pickImage} style={styles.button}>
+                Selecionar Foto de Perfil
+            </Button>
             <Button mode="contained" onPress={handleRegister} style={styles.button}>
                 Cadastrar
             </Button>
@@ -112,15 +146,18 @@ const styles = StyleSheet.create({
     container: {
         padding: 20,
     },
-    label: {
-        fontSize: 16,
-        marginBottom: 8,
-    },
     input: {
         marginBottom: 16,
     },
     button: {
         marginTop: 16,
+    },
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginTop: 16,
+        alignSelf: 'center'
     },
     modalContainer: {
         backgroundColor: 'white',

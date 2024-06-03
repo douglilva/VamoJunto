@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 0,
+        marginTop: -20,
         marginBottom: -10,
     },
     actionButton: {

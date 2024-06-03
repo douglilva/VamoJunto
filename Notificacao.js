@@ -60,7 +60,7 @@ export default function Notificacao({ route, navigation }) {
 
             return (
                 <ListItem
-                    onPress={() => navigation.navigate('TripDetails', trip)}
+                  
                     bottomDivider
                     containerStyle={styles.listItemContainer}
                 >

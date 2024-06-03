@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Alert, Modal, StyleSheet } from 'react-native';
-import { Button, Text, TextInput, Appbar } from 'react-native-paper'; // Importando Button, Text e TextInput do React Native Paper
+import { View, Alert, Modal, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Button, Text, TextInput, Appbar } from 'react-native-paper';
 import UserContext from './cadastro/UserContextFile';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Importe o ícone que deseja usar
+import Icon from 'react-native-vector-icons/FontAwesome';
+import * as ImagePicker from 'expo-image-picker'; // Importando ImagePicker
 
 const ProfileScreen = ({ route, navigation }) => {
     const { motoristaId } = route.params;
@@ -15,6 +16,7 @@ const ProfileScreen = ({ route, navigation }) => {
         email: '',
         password: '',
         nota: 0,
+        profileImage: null,
     });
 
     const [oldPassword, setOldPassword] = useState('');
@@ -28,6 +30,7 @@ const ProfileScreen = ({ route, navigation }) => {
                 email: currentUser.email,
                 password: currentUser.password,
                 nota: currentUser.nota,
+                profileImage: currentUser.profileImage,
             });
         }
     }, [currentUser]);
@@ -53,6 +56,7 @@ const ProfileScreen = ({ route, navigation }) => {
             document: user.document,
             email: user.email,
             password: user.password,
+            profileImage: user.profileImage,
         };
 
         dispatch({ type: 'updateUsuario', payload: updatedUser });
@@ -100,6 +104,19 @@ const ProfileScreen = ({ route, navigation }) => {
         navigation.navigate('Login');
     };
 
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setUser({ ...user, profileImage: result.assets[0].uri });
+        }
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <Appbar.Header style={styles.appbar}>
@@ -107,7 +124,13 @@ const ProfileScreen = ({ route, navigation }) => {
                 <Appbar.Action icon="logout" onPress={handleLogout} color="#ffffff" />
             </Appbar.Header>
             <View style={styles.container}>
-                <Text>Nota do usuário:</Text>
+                <TouchableOpacity onPress={pickImage}>
+                    {user.profileImage ? (
+                        <Image source={{ uri: user.profileImage }} style={styles.profileImage} />
+                    ) : (
+                        <Image source={require('./cadastro/default.png')} style={styles.profileImage} />
+                    )}
+                </TouchableOpacity>
                 <View style={styles.starsContainer}>
                     {renderStars()}
                     <Text style={styles.notaText}>{renderNotaText()}</Text>
@@ -164,69 +187,76 @@ const ProfileScreen = ({ route, navigation }) => {
                             <Button mode="contained" onPress={confirmUpdate} style={styles.button}>
                                 Confirmar
                             </Button>
-                            <Button mode="contained"
- onPress={() => setModalVisible(false)} style={styles.button}>
- Cancelar
-</Button>
-</View>
-</View>
-</Modal>
-</View>
-</View>
-);
+                            <Button mode="contained" onPress={() => setModalVisible(false)} style={styles.button}>
+                                Cancelar
+                            </Button>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-appbar: {
-backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
-},
-title: {
-color: '#ffffff', // Cor do texto do cabeçalho personalizada
-fontWeight: 'bold',
-},
-container: {
-padding: 20,
-},
-input: {
-marginBottom: 10,
-},
-button: {
-marginBottom: 10,
-},
-centeredView: {
-flex: 1,
-justifyContent: 'center',
-alignItems: 'center',
-marginTop: 22,
-},
-modalView: {
-margin: 20,
-backgroundColor: 'white',
-borderRadius: 20,
-padding: 35,
-alignItems: 'center',
-shadowColor: '#000',
-shadowOffset: {
-width: 0,
-height: 2,
-},
-shadowOpacity: 0.25,
-shadowRadius: 4,
-elevation: 5,
-},
-modalText: {
-marginBottom: 15,
-textAlign: 'center',
-},
-starsContainer: {
-flexDirection: 'row',
-alignItems: 'center',
-marginBottom: 10,
-},
-notaText: {
-marginLeft: 5,
-fontSize: 16,
-},
+    appbar: {
+        backgroundColor: '#6200ee', // Cor de fundo do cabeçalho personalizada
+    },
+    title: {
+        color: '#ffffff', // Cor do texto do cabeçalho personalizada
+        fontWeight: 'bold',
+    },
+    container: {
+        padding: 20,
+    },
+    input: {
+        marginBottom: 10,
+    },
+    button: {
+        marginBottom: 10,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    starsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    notaText: {
+        marginLeft: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
 });
 
 export default ProfileScreen;
