@@ -14,10 +14,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./logo-app-vamojunto.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.douglassilva01.VamoJunto"
     },
     "web": {
       "favicon": "./logo-app-vamojunto.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4f7d2c3b-286e-45f3-b0c2-3e462d05b2cb"
+      }
     }
   }
 }
